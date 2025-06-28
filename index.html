@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Visualizador 3D - OLAVO SCALE WHEELS</title>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: #111;
+      color: white;
+      font-family: sans-serif;
+    }
+    select {
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    model-viewer {
+      width: 100%;
+      height: 80vh;
+      background: #222;
+      border-radius: 12px;
+      box-shadow: 0 0 15px black;
+    }
+  </style>
+</head>
+<body>
+  <h1>Visualizador 3D - OLAVO SCALE WHEELS</h1>
+  <select id="modelSelector">
+    <option value="modelo1.glb">Modelo 1</option>
+    <option value="modelo2.glb">Modelo 2</option>
+  </select>
+
+  <model-viewer
+    id="viewer"
+    src="modelo1.glb"
+    camera-controls
+    auto-rotate
+    shadow-intensity="1"
+    alt="Modelo 3D"
+  ></model-viewer>
+
+  <script>
+    const selector = document.getElementById('modelSelector');
+    const viewer = document.getElementById('viewer');
+    selector.addEventListener('change', () => {
+      viewer.src = selector.value;
+    });
+  </script>
+</body>
+</html>
