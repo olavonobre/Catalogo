@@ -14,15 +14,22 @@
       background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre-big.png");
     }
 
+    .top-bar {
+      background-color: #fff000;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+    }
+
+    .top-bar img {
+      height: 60px;
+      filter: drop-shadow(0 0 4px black);
+    }
+
     header {
       text-align: center;
       margin: 20px 0;
-    }
-
-    header img {
-      max-width: 300px;
-      height: auto;
-      filter: drop-shadow(0 0 4px yellow);
     }
 
     h1 {
@@ -99,8 +106,12 @@
 </head>
 <body>
 
-  <header>
+  <!-- Faixa amarela com logo à esquerda -->
+  <div class="top-bar">
     <img src="../images/OEW-LOGO.webp" alt="Olavo Scale Wheels Logo">
+  </div>
+
+  <header>
     <h1>Brabus Monoblock S - Código 001_001</h1>
     <p>Um dos modelos mais icônicos da linha Brabus, o Monoblock S traz elegância e performance para o seu projeto em escala. Ideal para quem busca realismo e presença marcante nas miniaturas de luxo.</p>
   </header>
