@@ -18,9 +18,9 @@
       background-color: #fff000;
       width: 100%;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 20px;
+      align-items: flex-start;
+      position: relative;
+      padding: 10px 20px 50px 20px; /* espaço inferior para o menu */
     }
 
     .top-bar img {
@@ -28,21 +28,37 @@
       filter: drop-shadow(0 0 4px black);
     }
 
-    .nav-links {
+    .top-bar .whatsapp {
+      position: absolute;
+      top: 10px;
+      right: 20px;
       display: flex;
-      gap: 20px;
+      align-items: center;
+    }
+
+    .top-bar .whatsapp img {
+      height: 30px;
+      margin-right: 8px;
+    }
+
+    .top-bar .whatsapp span {
       font-weight: bold;
+      color: black;
+    }
+
+    .nav-links {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 30px;
     }
 
     .nav-links a {
-      text-decoration: none;
       color: black;
-      font-size: 1.1rem;
-      transition: 0.3s;
-    }
-
-    .nav-links a:hover {
-      text-decoration: underline;
+      font-weight: bold;
+      text-decoration: none;
     }
 
     header {
@@ -120,25 +136,21 @@
       background: #000;
       border-top: 2px solid yellow;
     }
-
-    @media (max-width: 768px) {
-      .top-bar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .nav-links {
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 10px;
-      }
-    }
   </style>
 </head>
 <body>
 
-  <!-- Faixa amarela com logo à esquerda e menu à direita -->
+  <!-- Faixa amarela com logo, WhatsApp e menu -->
   <div class="top-bar">
     <img src="../images/OEW-LOGO.webp" alt="Olavo Scale Wheels Logo">
+
+    <div class="whatsapp">
+      <a href="https://wa.me/351999999999" target="_blank" style="display: flex; align-items: center; text-decoration: none;">
+        <img src="../images/OEW-LOGO.webp" alt="WhatsApp">
+        <span>+351 999999999</span>
+      </a>
+    </div>
+
     <nav class="nav-links">
       <a href="../index.html">Página Inicial</a>
       <a href="../Chrome.001/001_001.html">Cromadas</a>
