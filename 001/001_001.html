@@ -2,74 +2,90 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Brabus Monoblock S - Cromo</title>
+  <title>Brabus Monoblock S - 001_001</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body {
+      font-family: Arial, sans-serif;
       margin: 0;
-      background: #0f0f0f;
+      padding: 0;
+      background-color: #121212;
       color: #fff;
-      font-family: 'Segoe UI', sans-serif;
     }
-    .container {
-      max-width: 1000px;
+
+    header {
+      background-color: #1f1f1f;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .descricao {
+      padding: 1rem;
+      max-width: 800px;
       margin: auto;
-      padding: 2rem;
     }
-    .title {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-    .subtitle {
-      font-size: 1.1rem;
-      color: #bbb;
-      margin-bottom: 1.5rem;
-    }
+
     .carousel {
       display: flex;
       overflow-x: auto;
-      gap: 10px;
-      margin-bottom: 2rem;
+      scroll-behavior: smooth;
+      padding: 1rem;
+      gap: 1rem;
     }
+
     .carousel img {
-      height: 200px;
-      border-radius: 10px;
+      max-height: 240px;
+      border-radius: 12px;
+      flex-shrink: 0;
     }
-    .description {
-      font-size: 1rem;
-      margin-bottom: 2rem;
-      line-height: 1.6;
-      color: #ccc;
-    }
+
     model-viewer {
       width: 100%;
-      height: 500px;
-      border: none;
-      background: #222;
-      border-radius: 12px;
+      height: 600px;
+      margin-top: 2rem;
+    }
+
+    .back {
+      display: block;
+      text-align: center;
+      margin: 1rem auto;
+      color: #aaa;
+      text-decoration: none;
+    }
+
+    .back:hover {
+      color: #fff;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="title">Brabus Monoblock S</div>
-    <div class="subtitle">Modelo 001 - Acabamento Cromo</div>
+  <header>
+    <h1>Brabus Monoblock S - Modelo 001 (Cromo)</h1>
+  </header>
 
-    <div class="carousel">
-      <img src="https://www.carid.com/images/brabus/wheels/monoblock-s-1.jpg" alt="Brabus 1">
-      <img src="https://www.carid.com/images/brabus/wheels/monoblock-s-2.jpg" alt="Brabus 2">
-      <img src="https://www.carid.com/images/brabus/wheels/monoblock-s-3.jpg" alt="Brabus 3">
-      <img src="https://www.carid.com/images/brabus/wheels/monoblock-s-4.jpg" alt="Brabus 4">
-      <img src="https://www.carid.com/images/brabus/wheels/monoblock-s-5.jpg" alt="Brabus 5">
-      <img src="https://www.carid.com/images/brabus/wheels/monoblock-s-6.jpg" alt="Brabus 6">
-    </div>
-
-    <div class="description">
-      A roda Brabus Monoblock S combina elegância com desempenho. Produzida com alto padrão de engenharia e acabamento cromado refinado, é ideal para projetos de miniaturas e dioramas de alto nível. Seu design de raios finos transmite sofisticação sem abrir mão da esportividade.
-    </div>
-
-    <model-viewer src="001_001.glb" alt="Roda Brabus 3D" auto-rotate camera-controls background-color="#ffffff">
-    </model-viewer>
+  <div class="descricao">
+    <p>
+      A roda Brabus Monoblock S é sinônimo de sofisticação e performance. Com seu design elegante, acabamento cromado e estrutura leve, oferece não apenas estética de luxo, mas também excelente desempenho para carros de alto padrão.
+    </p>
   </div>
+
+  <div class="carousel">
+    <img src="Pics/001.webp" alt="Foto 1">
+    <img src="Pics/002.webp" alt="Foto 2">
+    <img src="Pics/003.webp" alt="Foto 3">
+    <img src="Pics/004.webp" alt="Foto 4">
+    <img src="Pics/005.webp" alt="Foto 5">
+    <img src="Pics/006.webp" alt="Foto 6">
+  </div>
+
+  <model-viewer src="001_001.glb" auto-rotate camera-controls background-color="#000000" alt="Modelo 3D da Roda Brabus Monoblock S">
+  </model-viewer>
+
+  <a class="back" href="../index.html">← Voltar ao Catálogo</a>
 </body>
 </html>
