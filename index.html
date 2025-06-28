@@ -9,29 +9,38 @@
     body {
       margin: 0;
       padding: 2rem;
-      background: #111;
-      color: white;
-      font-family: sans-serif;
+      background: #0c0c0c;
+      color: #eee;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
     }
     select {
       margin-bottom: 1rem;
-      padding: 0.5rem;
+      padding: 0.5rem 1rem;
       font-size: 1rem;
+      border-radius: 6px;
+      border: none;
+      background: #222;
+      color: #eee;
     }
     model-viewer {
       width: 100%;
       height: 80vh;
-      background: #222;
+      background: #111;
       border-radius: 12px;
-      box-shadow: 0 0 15px black;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
     }
   </style>
 </head>
 <body>
-  <h1>Visualizador 3D - OLAVO SCALE WHEELS</h1>
+  <h1>Visualizador 3D – OLAVO SCALE WHEELS</h1>
   <select id="modelSelector">
     <option value="modelo1.glb">Modelo 1</option>
     <option value="modelo2.glb">Modelo 2</option>
+    <option value="001 - 3d.glb">Modelo Chrome 001</option>
   </select>
 
   <model-viewer
