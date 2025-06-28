@@ -1,65 +1,75 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Brabus 001_001</title>
+  <meta charset="UTF-8">
+  <title>Brabus Monoblock S - Cromo</title>
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body {
       margin: 0;
-      padding: 2rem;
-      background: #0c0c0c;
-      color: #eee;
+      background: #0f0f0f;
+      color: #fff;
       font-family: 'Segoe UI', sans-serif;
     }
-    h1 {
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 2rem;
+    }
+    .title {
       font-size: 2rem;
       margin-bottom: 0.5rem;
     }
-    p {
-      font-size: 1rem;
-      max-width: 800px;
-      margin-bottom: 2rem;
+    .subtitle {
+      font-size: 1.1rem;
+      color: #bbb;
+      margin-bottom: 1.5rem;
     }
     .carousel {
       display: flex;
       overflow-x: auto;
-      gap: 1rem;
+      gap: 10px;
       margin-bottom: 2rem;
     }
     .carousel img {
       height: 200px;
-      border-radius: 8px;
-      object-fit: cover;
+      border-radius: 10px;
+    }
+    .description {
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      color: #ccc;
     }
     model-viewer {
       width: 100%;
-      height: 80vh;
-      background: #111;
+      height: 500px;
+      border: none;
+      background: #222;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
     }
   </style>
 </head>
 <body>
-  <h1>Brabus Monoblock S – Modelo 001_001</h1>
-  <p>Esta é a versão cromada da icônica roda Monoblock S da Brabus, identificada como modelo <strong>001_001</strong>. Com acabamento de alto brilho, esta roda entrega performance e sofisticação para veículos premium. Confira abaixo imagens ilustrativas e um modelo 3D interativo.</p>
+  <div class="container">
+    <div class="title">Brabus Monoblock S</div>
+    <div class="subtitle">Modelo 001 - Acabamento Cromo</div>
 
-  <div class="carousel">
-    <img src="https://cdn.bimmertoday.de/wp-content/uploads/2020/04/Brabus-Monoblock-Z-Rad-BMW-8er-G16-07.jpg" alt="Foto 1">
-    <img src="https://www.wheelworld.com/media/image/58/c6/2f/Brabus-Monoblock-Y_800x800.jpg" alt="Foto 2">
-    <img src="https://www.brabus.com/media/pages/tuning-program/mercedes/g-class/brabus-800-widestar-w463a-23-inch-monoblock-z/3692024773-1636707931/brabus-800-widestar-g63-1-01.jpg" alt="Foto 3">
-    <img src="https://cdn.autozeitung.de/assets/styles/article_image/public/2023-04/brabus-900-deep-blue.jpg" alt="Foto 4">
-    <img src="https://www.autobild.de/bilder/brabus-monoblock-z--felgen-fuer-die-ps-starken-1-17088523.html" alt="Foto 5">
-    <img src="https://www.motortrend.com/uploads/sites/5/2022/12/Brabus-P900-Rocket-Edition-Wheel.jpg" alt="Foto 6">
+    <div class="carousel">
+      <img src="https://www.carid.com/images/brabus/wheels/monoblock-s-1.jpg" alt="Brabus 1">
+      <img src="https://www.carid.com/images/brabus/wheels/monoblock-s-2.jpg" alt="Brabus 2">
+      <img src="https://www.carid.com/images/brabus/wheels/monoblock-s-3.jpg" alt="Brabus 3">
+      <img src="https://www.carid.com/images/brabus/wheels/monoblock-s-4.jpg" alt="Brabus 4">
+      <img src="https://www.carid.com/images/brabus/wheels/monoblock-s-5.jpg" alt="Brabus 5">
+      <img src="https://www.carid.com/images/brabus/wheels/monoblock-s-6.jpg" alt="Brabus 6">
+    </div>
+
+    <div class="description">
+      A roda Brabus Monoblock S combina elegância com desempenho. Produzida com alto padrão de engenharia e acabamento cromado refinado, é ideal para projetos de miniaturas e dioramas de alto nível. Seu design de raios finos transmite sofisticação sem abrir mão da esportividade.
+    </div>
+
+    <model-viewer src="001_001.glb" alt="Roda Brabus 3D" auto-rotate camera-controls background-color="#ffffff">
+    </model-viewer>
   </div>
-
-  <model-viewer
-    src="001_001.glb"
-    camera-controls
-    auto-rotate
-    shadow-intensity="1"
-    alt="Modelo 3D da roda 001_001"
-  ></model-viewer>
 </body>
 </html>
