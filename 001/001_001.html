@@ -13,7 +13,6 @@
       font-family: 'Segoe UI', sans-serif;
       background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre-big.png");
     }
-
     .top-bar {
       background-color: #fff000;
       width: 100%;
@@ -30,6 +29,12 @@
     header {
       text-align: center;
       margin: 20px 0;
+    }
+
+    header img {
+      max-width: 300px;
+      height: auto;
+      filter: drop-shadow(0 0 4px yellow);
     }
 
     h1 {
@@ -106,17 +111,13 @@
 </head>
 <body>
 
-  <!-- Faixa amarela com logo à esquerda -->
-  <div class="top-bar">
-    <img src="../images/OEW-LOGO.webp" alt="Olavo Scale Wheels Logo">
-  </div>
-
   <header>
+    <img src="../images/OEW-LOGO.webp" alt="Olavo Scale Wheels Logo">
     <h1>Brabus Monoblock S - Código 001_001</h1>
     <p>Um dos modelos mais icônicos da linha Brabus, o Monoblock S traz elegância e performance para o seu projeto em escala. Ideal para quem busca realismo e presença marcante nas miniaturas de luxo.</p>
   </header>
 
-  <!-- Carrossel -->
+  <!-- Carrossel de imagens principais -->
   <div id="carouselFotos" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
@@ -138,4 +139,31 @@
         <img src="Pics/006.webp" class="d-block w-100" alt="Foto 6">
       </div>
     </div>
-    <button class="carousel-control-prev" type="bu
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselFotos" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselFotos" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+
+  <!-- Seção de fotos dos clientes -->
+  <div class="section-title">Fotos dos Clientes</div>
+  <div class="customer-gallery">
+    <div class="customer-photo">
+      <img src="Pics/003.webp" alt="Cliente 1">
+      <p>João Lima - Jun/2025</p>
+    </div>
+    <div class="customer-photo">
+      <img src="Pics/004.webp" alt="Cliente 2">
+      <p>Ana Souza - Jun/2025</p>
+    </div>
+  </div>
+
+  <!-- Visualizador 3D -->
+  <model-viewer src="001_001.glb" alt="Brabus Monoblock S 3D"
+    shadow-intensity="1" camera-controls auto-rotate ar ar-modes="webxr scene-viewer quick-look">
+  </model-viewer>
+
+</body>
+</html>
