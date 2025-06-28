@@ -19,12 +19,30 @@
       width: 100%;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       padding: 10px 20px;
     }
 
     .top-bar img {
       height: 120px;
       filter: drop-shadow(0 0 4px black);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      font-weight: bold;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: black;
+      font-size: 1.1rem;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
     }
 
     header {
@@ -102,13 +120,33 @@
       background: #000;
       border-top: 2px solid yellow;
     }
+
+    @media (max-width: 768px) {
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav-links {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Faixa amarela com logo à esquerda -->
+  <!-- Faixa amarela com logo à esquerda e menu à direita -->
   <div class="top-bar">
     <img src="../images/OEW-LOGO.webp" alt="Olavo Scale Wheels Logo">
+    <nav class="nav-links">
+      <a href="../index.html">Página Inicial</a>
+      <a href="../Chrome.001/001_001.html">Cromadas</a>
+      <a href="../Gold.002/002_001.html">Douradas</a>
+      <a href="../Black.003/003_001.html">Pretas</a>
+      <a href="../White.004/004_001.html">Brancas</a>
+      <a href="../Other.005/005_001.html">Outras</a>
+    </nav>
   </div>
 
   <header>
