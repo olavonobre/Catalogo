@@ -1,132 +1,156 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Brabus Monoblock S - 001_001</title>
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      background-color: #121212;
-      color: #fff;
+      background-color: #000;
+      background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre-v2.png");
+      color: white;
+      font-family: Arial, sans-serif;
     }
 
     header {
-      background-color: #1f1f1f;
-      padding: 1rem;
+      background-color: #000;
       text-align: center;
+      padding: 20px;
     }
 
-    .descricao {
-      padding: 1rem;
+    header img {
+      max-width: 280px;
+      height: auto;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      margin: 10px;
+    }
+
+    .description {
+      text-align: center;
       max-width: 800px;
-      margin: auto;
-      text-align: center;
-    }
-
-    .carousel-container {
-      position: relative;
-      width: 90%;
-      margin: auto;
-      overflow: hidden;
+      margin: 0 auto 30px;
+      padding: 0 20px;
+      font-size: 18px;
+      line-height: 1.6;
     }
 
     .carousel {
       display: flex;
-      transition: transform 0.3s ease;
-      gap: 1rem;
       overflow-x: auto;
-      scroll-behavior: smooth;
-      padding: 1rem 0;
-    }
-
-    .carousel::-webkit-scrollbar {
-      display: none;
+      scroll-snap-type: x mandatory;
+      gap: 16px;
+      padding: 16px;
     }
 
     .carousel img {
-      max-height: 250px;
-      border-radius: 10px;
-      flex-shrink: 0;
+      flex: 0 0 auto;
+      width: 300px;
+      height: auto;
+      border-radius: 8px;
+      scroll-snap-align: center;
+      border: 2px solid #ff0;
     }
 
-    .carousel-btn {
-      position: absolute;
-      top: 40%;
-      transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.5);
-      border: none;
-      color: white;
-      font-size: 2rem;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      z-index: 1;
+    .customer-photos {
+      margin-top: 40px;
     }
 
-    .carousel-btn.left {
-      left: 0;
+    .customer-photo {
+      text-align: center;
+      margin: 20px;
     }
 
-    .carousel-btn.right {
-      right: 0;
+    .customer-photo img {
+      width: 300px;
+      border: 2px solid #ff0;
+      border-radius: 8px;
+    }
+
+    .customer-photo p {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .viewer {
+      text-align: center;
+      margin-top: 40px;
     }
 
     model-viewer {
       width: 100%;
-      height: 600px;
-      margin-top: 2rem;
-      background-color: #000;
+      height: 500px;
+      background-color: #111;
     }
 
-    .back {
-      display: block;
-      text-align: center;
-      margin: 2rem auto;
-      color: #ccc;
+    .btn {
+      background-color: yellow;
+      color: black;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
       text-decoration: none;
     }
 
-    .back:hover {
-      color: #fff;
+    .btn:hover {
+      background-color: #ffd700;
     }
   </style>
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
+
   <header>
-    <h1>Brabus Monoblock S - Modelo 001 (Cromo)</h1>
+    <img src="../images/OEW-LOGO.webp" alt="Olavo Scale Wheels Logo">
   </header>
 
-  <div class="descricao">
-    <p>
-      A roda Brabus Monoblock S é sinônimo de sofisticação e performance. Com seu design elegante, acabamento cromado e estrutura leve, oferece não apenas estética de luxo, mas também excelente desempenho para carros de alto padrão.
-    </p>
+  <h1>Brabus Monoblock S - Código 001_001</h1>
+
+  <div class="description">
+    Um dos modelos mais icônicos da linha Brabus, o Monoblock S traz elegância e performance para o seu projeto em escala. Ideal para quem busca realismo e presença marcante nas miniaturas de luxo.
   </div>
 
-  <div class="carousel-container">
-    <button class="carousel-btn left" onclick="scrollCarousel(-1)">&#10094;</button>
-    <div class="carousel" id="carousel">
-      <img src="Pics/001.webp" alt="Foto 1">
-      <img src="Pics/002.webp" alt="Foto 2">
-      <img src="Pics/003.webp" alt="Foto 3">
-      <img src="Pics/004.webp" alt="Foto 4">
-      <img src="Pics/005.webp" alt="Foto 5">
-      <img src="Pics/006.webp" alt="Foto 6">
+  <div class="carousel">
+    <img src="Pics/001.webp" alt="Foto 1">
+    <img src="Pics/002.webp" alt="Foto 2">
+    <img src="Pics/003.webp" alt="Foto 3">
+    <img src="Pics/004.webp" alt="Foto 4">
+    <img src="Pics/005.webp" alt="Foto 5">
+    <img src="Pics/006.webp" alt="Foto 6">
+  </div>
+
+  <div class="customer-photos">
+    <h2 style="text-align:center;">Fotos dos Clientes</h2>
+    <div class="carousel">
+      <div class="customer-photo">
+        <img src="Pics/003.webp" alt="Cliente A">
+        <p>João - Mai/2025</p>
+      </div>
+      <div class="customer-photo">
+        <img src="Pics/004.webp" alt="Cliente B">
+        <p>Ana - Jun/2025</p>
+      </div>
     </div>
-    <button class="carousel-btn right" onclick="scrollCarousel(1)">&#10095;</button>
   </div>
 
-  <model-viewer src="001_001.glb" auto-rotate camera-controls alt="Modelo 3D da Roda Brabus Monoblock S">
-  </model-viewer>
+  <div class="viewer">
+    <h2>Visualização 3D Interativa</h2>
+    <model-viewer src="001_001.glb" alt="Modelo 3D"
+      shadow-intensity="1" camera-controls auto-rotate ar></model-viewer>
+  </div>
 
-  <a class="back" href="../index.html">← Voltar ao Catálogo</a>
+  <div style="text-align: center; margin: 40px;">
+    <a class="btn" href="../catalogo_3d_rodas.html">Voltar ao Catálogo</a>
+    <a class="btn" href="#">Comprar Agora</a>
+  </div>
 
-  <script>
-    function scrollCarousel(direction) {
-      const carousel = document.getElementById('carousel');
-      const scrollAmount = 300; // pixels por clique
-      carousel.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
-    }
-  </script>
 </body>
 </html>
