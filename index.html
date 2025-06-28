@@ -1,10 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Visualizador 3D - OLAVO SCALE WHEELS</title>
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Catálogo OLAVO SCALE WHEELS</title>
   <style>
     body {
       margin: 0;
@@ -14,11 +12,10 @@
       font-family: 'Segoe UI', sans-serif;
     }
     h1 {
-      font-size: 1.5rem;
+      font-size: 2rem;
       margin-bottom: 1rem;
     }
     select {
-      margin-bottom: 1rem;
       padding: 0.5rem 1rem;
       font-size: 1rem;
       border-radius: 6px;
@@ -26,37 +23,24 @@
       background: #222;
       color: #eee;
     }
-    model-viewer {
-      width: 100%;
-      height: 80vh;
-      background: #111;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-    }
   </style>
 </head>
 <body>
-  <h1>Visualizador 3D – OLAVO SCALE WHEELS</h1>
+  <h1>Catálogo de Rodas 3D</h1>
+  <label for="modelSelector">Escolha uma roda:</label>
   <select id="modelSelector">
-    <option value="modelo1.glb">Modelo 1</option>
-    <option value="modelo2.glb">Modelo 2</option>
-    <option value="001 - 3d.glb">Modelo Chrome 001</option>
+    <option value="">-- Selecione --</option>
+    <option value="modelo1.html">Modelo 1</option>
+    <option value="modelo2.html">Modelo 2</option>
+    <option value="modelo_001_chrome.html">Chrome 001</option>
   </select>
-
-  <model-viewer
-    id="viewer"
-    src="modelo1.glb"
-    camera-controls
-    auto-rotate
-    shadow-intensity="1"
-    alt="Modelo 3D"
-  ></model-viewer>
 
   <script>
     const selector = document.getElementById('modelSelector');
-    const viewer = document.getElementById('viewer');
     selector.addEventListener('change', () => {
-      viewer.src = selector.value;
+      if (selector.value) {
+        window.location.href = selector.value;
+      }
     });
   </script>
 </body>
