@@ -12,15 +12,23 @@
       color: white;
       font-family: 'Segoe UI', sans-serif;
       background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre-big.png");
+      margin: 0;
     }
 
     .top-bar {
       background-color: #fff000;
       width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       padding: 10px 20px;
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .top-bar .logo-whatsapp {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
     }
 
     .top-bar img.logo {
@@ -28,12 +36,25 @@
       filter: drop-shadow(0 0 4px black);
     }
 
+    .whatsapp {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #000;
+    }
+
+    .whatsapp img {
+      height: 24px;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
     .menu {
       display: flex;
-      gap: 20px;
+      justify-content: center;
+      width: 100%;
+      gap: 30px;
       font-weight: bold;
-      margin-right: 20px;
-      align-items: flex-end;
+      margin-top: 10px;
     }
 
     .menu a {
@@ -43,18 +64,6 @@
 
     .menu a:hover {
       text-decoration: underline;
-    }
-
-    .whatsapp {
-      margin-left: auto;
-      text-align: right;
-      font-size: 0.9rem;
-    }
-
-    .whatsapp img {
-      height: 24px;
-      vertical-align: middle;
-      margin-right: 6px;
     }
 
     header {
@@ -134,9 +143,14 @@
 </head>
 <body>
 
-  <!-- Faixa amarela com logo, menu e WhatsApp -->
+  <!-- Faixa amarela com logo, WhatsApp e menu na parte inferior -->
   <div class="top-bar">
-    <img src="../images/OEW-LOGO.webp" alt="Olavo Scale Wheels Logo" class="logo">
+    <div class="logo-whatsapp">
+      <img src="../images/OEW-LOGO.webp" alt="Olavo Scale Wheels Logo" class="logo">
+      <div class="whatsapp">
+        <img src="../images/OEW-LOGO.webp" alt="WhatsApp"> +351 999999999
+      </div>
+    </div>
     <div class="menu">
       <a href="../index.html">Página Inicial</a>
       <a href="#">Cromadas</a>
@@ -144,9 +158,6 @@
       <a href="#">Pretas</a>
       <a href="#">Brancas</a>
       <a href="#">Outras</a>
-    </div>
-    <div class="whatsapp">
-      <img src="../images/OEW-LOGO.webp" alt="WhatsApp"> +351 999999999
     </div>
   </div>
 
