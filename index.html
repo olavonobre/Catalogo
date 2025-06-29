@@ -3,145 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <title>Catálogo OLAVO SCALE WHEELS</title>
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
   <style>
     body {
-      background-color: #0c0c0c;
-      color: #fff;
-      font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      padding: 20px;
+      padding: 2rem;
+      background: #0c0c0c;
+      color: #eee;
+      font-family: 'Segoe UI', sans-serif;
     }
 
     h1 {
       text-align: center;
+      font-size: 2rem;
+      margin-bottom: 2rem;
       color: #fff000;
-      margin-bottom: 40px;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 30px;
+      padding: 1rem;
     }
 
-    .model-card {
+    .model-box {
       background-color: #1a1a1a;
-      border: 2px solid #fff000;
+      border: 2px solid #444;
       border-radius: 10px;
-      padding: 10px;
+      padding: 1rem;
       text-align: center;
-      box-shadow: 0 0 10px #000;
+      transition: transform 0.2s ease;
     }
 
-    model-viewer {
-      width: 100%;
-      height: 250px;
-      background-color: #000;
+    .model-box:hover {
+      transform: scale(1.03);
+      border-color: #ffff00;
+    }
+
+    .model-box img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      border: 1px solid #666;
+      margin-bottom: 10px;
+    }
+
+    .model-box a {
+      display: inline-block;
+      padding: 8px 16px;
+      background-color: #ffff00;
+      color: #000;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 6px;
+      margin-top: 10px;
     }
 
     .model-name {
-      margin-top: 10px;
-      font-weight: bold;
-      color: #fff000;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
+      margin: 0.5rem 0;
+      font-size: 1rem;
+      color: #fff;
     }
   </style>
 </head>
 <body>
 
-  <h1>Catálogo OLAVO SCALE WHEELS – Vitrine Interativa</h1>
+  <h1>Catálogo de Rodas – OLAVO SCALE WHEELS</h1>
 
   <div class="grid">
-    <!-- Modelos reais -->
-    <div class="model-card">
-      <a href="chrome 001/001_001.html">
-        <model-viewer src="chrome 001/001_001.glb" camera-controls auto-rotate></model-viewer>
-        <div class="model-name">Brabus Monoblock S – 001_001</div>
-      </a>
+    <!-- Modelo 001_001 -->
+    <div class="model-box">
+      <img src="chrome 001/Pics/thumb.webp" alt="Brabus Monoblock S">
+      <div class="model-name">Brabus Monoblock S</div>
+      <a href="chrome 001/001_001.html">Ver modelo</a>
     </div>
 
-    <div class="model-card">
-      <a href="chrome 075/075.html">
-        <model-viewer src="chrome 075/075.glb" camera-controls auto-rotate></model-viewer>
-        <div class="model-name">Fuchs – 075</div>
-      </a>
+    <!-- Modelo 075 -->
+    <div class="model-box">
+      <img src="chrome 075/Pics/thumb.webp" alt="Fuchs">
+      <div class="model-name">Fuchs</div>
+      <a href="chrome 075/075.html">Ver modelo</a>
     </div>
 
-    <!-- Modelos genéricos de exemplo -->
-    <!-- IDs de 100 a 399 -->
-    <!-- Exemplo de como os blocos foram gerados dinamicamente -->
-
-    <!-- Início dos genéricos -->
-    <!-- Abaixo segue exemplo de alguns blocos, mas você pode gerar até 300 no total -->
-
-    <!-- Apenas 10 exemplos a seguir para não sobrecarregar a visualização -->
-    <div class="model-card">
-      <a href="#">
-        <model-viewer src="models/generic_100.glb" camera-controls auto-rotate></model-viewer>
-        <div class="model-name">Modelo Genérico – 100</div>
-      </a>
+    <!-- Exemplo de modelos genéricos futuros -->
+    <!--
+    <div class="model-box">
+      <img src="chrome 002/Pics/thumb.webp" alt="Nome da Roda">
+      <div class="model-name">Nome da Roda</div>
+      <a href="chrome 002/002_001.html">Ver modelo</a>
     </div>
-    <div class="model-card">
-      <a href="#">
-        <model-viewer src="models/generic_101.glb" camera-controls auto-rotate></model-viewer>
-        <div class="model-name">Modelo Genérico – 101</div>
-      </a>
-    </div>
-    <div class="model-card">
-      <a href="#">
-        <model-viewer src="models/generic_102.glb" camera-controls auto-rotate></model-viewer>
-        <div class="model-name">Modelo Genérico – 102</div>
-      </a>
-    </div>
-    <div class="model-card">
-      <a href="#">
-        <model-viewer src="models/generic_103.glb" camera-controls auto-rotate></model-viewer>
-        <div class="model-name">Modelo Genérico – 103</div>
-      </a>
-    </div>
-    <div class="model-card">
-      <a href="#">
-        <model-viewer src="models/generic_104.glb" camera-controls auto-rotate></model-viewer>
-        <div class="model-name">Modelo Genérico – 104</div>
-      </a>
-    </div>
-    <div class="model-card">
-      <a href="#">
-        <model-viewer src="models/generic_105.glb" camera-controls auto-rotate></model-viewer>
-        <div class="model-name">Modelo Genérico – 105</div>
-      </a>
-    </div>
-    <div class="model-card">
-      <a href="#">
-        <model-viewer src="models/generic_106.glb" camera-controls auto-rotate></model-viewer>
-        <div class="model-name">Modelo Genérico – 106</div>
-      </a>
-    </div>
-    <div class="model-card">
-      <a href="#">
-        <model-viewer src="models/generic_107.glb" camera-controls auto-rotate></model-viewer>
-        <div class="model-name">Modelo Genérico – 107</div>
-      </a>
-    </div>
-    <div class="model-card">
-      <a href="#">
-        <model-viewer src="models/generic_108.glb" camera-controls auto-rotate></model-viewer>
-        <div class="model-name">Modelo Genérico – 108</div>
-      </a>
-    </div>
-    <div class="model-card">
-      <a href="#">
-        <model-viewer src="models/generic_109.glb" camera-controls auto-rotate></model-viewer>
-        <div class="model-name">Modelo Genérico – 109</div>
-      </a>
-    </div>
-    <!-- ... Continue até generic_399.glb ... -->
-
+    -->
   </div>
 
 </body>
