@@ -1,99 +1,321 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Catálogo OLAVO SCALE WHEELS</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Olavo Scale Wheels – Catálogo (Artigos por ID)</title>
+  <meta name="description" content="Catálogo por artigos – preenche automaticamente a partir do ID (MMM.CCC.TT)" />
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body {
-      margin: 0;
-      padding: 2rem;
-      background: #0c0c0c;
-      color: #eee;
-      font-family: 'Segoe UI', sans-serif;
-    }
-
-    h1 {
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: 2rem;
-      color: #fff000;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 30px;
-      padding: 1rem;
-    }
-
-    .model-box {
-      background-color: #1a1a1a;
-      border: 2px solid #444;
-      border-radius: 10px;
-      padding: 1rem;
-      text-align: center;
-      transition: transform 0.2s ease;
-    }
-
-    .model-box:hover {
-      transform: scale(1.03);
-      border-color: #ffff00;
-    }
-
-    .model-box img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 6px;
-      border: 1px solid #666;
-      margin-bottom: 10px;
-    }
-
-    .model-box a {
-      display: inline-block;
-      padding: 8px 16px;
-      background-color: #ffff00;
-      color: #000;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 6px;
-      margin-top: 10px;
-    }
-
-    .model-name {
-      margin: 0.5rem 0;
-      font-size: 1rem;
-      color: #fff;
-    }
+    ::-webkit-scrollbar { height: 8px; width: 8px; }
+    ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 9999px; }
   </style>
 </head>
-<body>
+<body class="bg-neutral-950 text-white selection:bg-yellow-400 selection:text-black">
+  <!-- Header -->
+  <header class="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/70 border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="size-9 rounded-full bg-yellow-400 flex items-center justify-center">
+          <span class="text-black font-extrabold">OSW</span>
+        </div>
+        <div>
+          <h1 class="text-lg font-semibold leading-tight">OLAVO <span class="text-yellow-400">SCALE WHEELS</span></h1>
+          <p class="text-xs text-white/60 -mt-0.5">Catálogo por artigos (auto por ID)</p>
+        </div>
+      </div>
 
-  <h1>Catálogo de Rodas – OLAVO SCALE WHEELS</h1>
+      <div class="flex items-center gap-2">
+        <label class="relative hidden sm:block">
+          <input id="searchInput" type="search" placeholder="Buscar código ou modelo..." class="w-64 bg-white/5 border border-white/10 rounded-xl px-3 py-2 pl-9 text-sm outline-none focus:border-yellow-400/60" />
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5 text-white/50 absolute left-2.5 top-1/2 -translate-y-1/2">
+            <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 4.2 12.05l4.25 4.25a.75.75 0 1 0 1.06-1.06l-4.25-4.25A6.75 6.75 0 0 0 10.5 3.75Zm-5.25 6.75a5.25 5.25 0 1 1 10.5 0 5.25 5.25 0 0 1-10.5 0Z" clip-rule="evenodd"/>
+          </svg>
+        </label>
 
-  <div class="grid">
-    <!-- Modelo 001_001 -->
-    <div class="model-box">
-      <img src="chrome 001/Pics/thumb.webp" alt="Brabus Monoblock S">
-      <div class="model-name">Brabus Monoblock S</div>
-      <a href="chrome 001/001_001.html">Ver modelo</a>
+        <button id="cartButton" class="relative inline-flex items-center gap-2 bg-yellow-400 text-black font-semibold px-3 py-2 rounded-xl hover:brightness-95 active:brightness-90 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
+            <path d="M2.25 3a.75.75 0 0 1 .75-.75h1.386a1.5 1.5 0 0 1 1.415 1.02l.519 1.557h12.18a.75.75 0 0 1 .728.936l-1.5 6A.75.75 0 0 1 17 12.75H7.03l-.3.9a.75.75 0 0 0 .71 1.05H18a.75.75 0 0 1 0 1.5H7.44a2.25 2.25 0 1 1-2.1-3h.09l1.62-4.86L5.22 5.25H3a.75.75 0 0 1-.75-.75Z"/>
+          </svg>
+          <span>Carrinho</span>
+          <span id="cartCount" class="absolute -right-2 -top-2 text-xs bg-black text-yellow-400 border border-yellow-400 rounded-full px-1.5 py-0.5">0</span>
+        </button>
+      </div>
     </div>
+  </header>
 
-    <!-- Modelo 075 -->
-    <div class="model-box">
-      <img src="chrome 075/Pics/thumb.webp" alt="Fuchs">
-      <div class="model-name">Fuchs</div>
-      <a href="chrome 075/075.html">Ver modelo</a>
+  <main>
+    <!-- Destaques / Carousel Top 10 -->
+    <section class="max-w-7xl mx-auto px-4 pt-8">
+      <div class="mb-4 flex items-center justify-between">
+        <h2 class="text-xl sm:text-2xl font-bold">Mais vendidas</h2>
+        <div class="text-xs sm:text-sm text-white/60">Top 10 da loja</div>
+      </div>
+
+      <div class="relative">
+        <div id="carouselTrack" class="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2"></div>
+        <div class="flex items-center justify-end gap-2 mt-2">
+          <button id="prevSlide" class="size-9 grid place-items-center rounded-full border border-white/15 hover:bg-white/10">‹</button>
+          <button id="nextSlide" class="size-9 grid place-items-center rounded-full border border-white/15 hover:bg-white/10">›</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guia de leitura do código -->
+    <section class="max-w-7xl mx-auto px-4 pt-6">
+      <div class="mb-6 bg-white/5 border border-white/10 rounded-2xl p-5">
+        <h2 class="text-xl font-bold mb-3">Como ler o código das rodas</h2>
+        <p class="text-white/80 text-sm mb-3">Formato geral: <code class="bg-black/30 px-2 py-1 rounded">MMM.CCC.TT</code></p>
+        <ul class="list-disc pl-5 space-y-1 text-sm text-white/80">
+          <li><strong>MMM</strong> = <em>Modelo</em> (3 dígitos). Ex.: <code>031</code> → modelo 031.</li>
+          <li><strong>CCC</strong> = <em>Cor</em> (3 dígitos). Ex.: <code>001</code> = Cromado, <code>002</code> = Dourado, <code>003</code> = Preto, <code>020</code> = Azul <span class="text-white/50">(exemplos)</span>.</li>
+          <li><strong>TT</strong> = <em>Tamanho</em>. Pode ter ponto ou vírgula. Ex.: <code>11</code>, <code>10</code>, <code>12,5</code>.</li>
+        </ul>
+        <div class="grid sm:grid-cols-2 gap-3 mt-4 text-sm">
+          <div class="bg-black/20 rounded-xl p-3 border border-white/5">
+            <div class="text-white/60 mb-1">Exemplos</div>
+            <ul class="space-y-1">
+              <li><code>031.001.11</code> → Modelo <strong>031</strong>, Cor <strong>001 (Cromado)</strong>, Tamanho <strong>11</strong></li>
+              <li><code>031.002.11</code> → Modelo <strong>031</strong>, Cor <strong>002 (Dourado)</strong>, Tamanho <strong>11</strong></li>
+              <li><code>031.003.10</code> → Modelo <strong>031</strong>, Cor <strong>003 (Preto)</strong>, Tamanho <strong>10</strong></li>
+              <li><code>031.020.12,5</code> → Modelo <strong>031</strong>, Cor <strong>020 (Azul)</strong>, Tamanho <strong>12,5</strong></li>
+            </ul>
+          </div>
+          <div class="bg-black/20 rounded-xl p-3 border border-white/5">
+            <label class="block text-white/80 mb-2">Digite um código para decodificar</label>
+            <input id="decodeInput" type="text" placeholder="ex.: 031.001.11" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 outline-none focus:border-yellow-400/60">
+            <div id="decodeOut" class="mt-2 text-white/80"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Catálogo -->
+    <section class="max-w-7xl mx-auto px-4 pt-2 pb-24">
+      <div class="mb-4 flex items-center justify-between">
+        <h2 class="text-xl sm:text-2xl font-bold">Catálogo completo</h2>
+        <div class="text-xs sm:text-sm text-white/60">Selecione a quantidade e adicione ao carrinho</div>
+      </div>
+
+      <div id="catalogGrid" class="grid gap-4 sm:gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></div>
+      <div id="emptyState" class="hidden text-center text-white/60 mt-10">Nenhum item encontrado para sua busca.</div>
+    </section>
+  </main>
+
+  <!-- Drawer do carrinho -->
+  <aside id="cartDrawer" class="fixed inset-y-0 right-0 w-[92%] sm:w-[420px] bg-neutral-900 border-l border-white/10 shadow-2xl translate-x-full transition-transform duration-300 z-50 flex flex-col">
+    <div class="p-4 border-b border-white/10 flex items-center justify-between">
+      <h3 class="text-lg font-semibold">Seu carrinho</h3>
+      <button id="closeCart" class="size-8 grid place-items-center rounded-full hover:bg-white/10">✕</button>
     </div>
-
-    <!-- Exemplo de modelos genéricos futuros -->
-    <!--
-    <div class="model-box">
-      <img src="chrome 002/Pics/thumb.webp" alt="Nome da Roda">
-      <div class="model-name">Nome da Roda</div>
-      <a href="chrome 002/002_001.html">Ver modelo</a>
+    <div id="cartItems" class="flex-1 overflow-y-auto divide-y divide-white/5"></div>
+    <div class="p-4 border-t border-white/10 space-y-3">
+      <div class="flex items-center justify-between text-sm text-white/70">
+        <span>Total de itens</span>
+        <span id="cartTotalItems" class="font-semibold text-white">0</span>
+      </div>
+      <label class="block text-sm text-white/80">Nome do cliente (opcional)
+        <input id="customerName" type="text" class="mt-1 w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm outline-none focus:border-yellow-400/60" placeholder="Seu nome" />
+      </label>
+      <button id="whatsCheckout" class="w-full bg-yellow-400 text-black font-semibold px-4 py-3 rounded-xl hover:brightness-95 active:brightness-90 transition disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+        Enviar pedido via WhatsApp
+      </button>
+      <p class="text-[11px] text-white/50">Abriremos seu WhatsApp com a mensagem do pedido já preenchida.</p>
     </div>
-    -->
-  </div>
+  </aside>
+  <div id="backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden z-40"></div>
 
+  <footer class="border-t border-white/10 py-8 text-center text-sm text-white/50">
+    © <span id="year"></span> OLAVO SCALE WHEELS — Todos os direitos reservados.
+  </footer>
+
+  <!-- App Script: dados + UI  (cada artigo é um item único) -->
+  <script>
+    // ======= CONFIG =======
+    const WHATSAPP_NUMBER = "351913624727"; // PT (DDI 351) + número, apenas dígitos
+
+    // ======= AUTOPREENCHIMENTO A PARTIR DO ID (MMM.CCC.TT) =======
+    const COLOR_MAP = { "001":"Cromado", "002":"Dourado", "003":"Preto", "020":"Azul" };
+    const MODEL_MAP = { "001":"Roda 001", "011":"Roda 011", "012":"Roda 012", "031":"Roda 031", "050":"Roda 050", "060":"Roda 060" };
+    const imagePath = (mmm, ccc, tt) => `./imagens/${mmm}/${ccc}/${tt}.jpg`;
+
+    function parseArticleId(id){
+      const parts = String(id).trim().split(".");
+      if(parts.length < 3){ return { mmm: id, ccc: '', tt: '' }; }
+      const [mmm, ccc, ...rest] = parts; // tamanho pode conter ponto ou vírgula
+      const tt = rest.join('.');
+      return { mmm, ccc, tt };
+    }
+    function buildProduct(base){
+      const { id } = base; const { mmm, ccc, tt } = parseArticleId(id);
+      const nomeModelo = MODEL_MAP[mmm] || `Roda ${mmm}`;
+      const nomeCor = COLOR_MAP[ccc] || `Cor ${ccc}`;
+      return { id, codigo: id, modelo: base.modelo || `${nomeModelo} ${nomeCor} ${tt}`, estoque: Number(base.estoque)||0, img: base.img || imagePath(mmm, ccc, tt) };
+    }
+
+    // >>> Só manter esta lista simples. O resto se completa.
+    const PRODUCTS_RAW = [
+      { id: "031.001.11", estoque: 8 },
+      { id: "031.002.11", estoque: 6 },
+      { id: "031.003.10", estoque: 3 },
+      { id: "031.020.12,5", estoque: 5 },
+      { id: "001.001.17", estoque: 12 },
+      { id: "001.003.18", estoque: 0 },
+      { id: "011.011.17", estoque: 7 },
+      { id: "012.012.18", estoque: 2 },
+      { id: "050.001.19", estoque: 10 },
+      { id: "060.001.20", estoque: 9 }
+    ];
+    const PRODUCTS = PRODUCTS_RAW.map(buildProduct);
+
+    // Top 10
+    const TOP10_IDS = ["031.001.11","031.002.11","031.003.10","031.020.12,5","001.001.17","011.011.17","050.001.19","060.001.20","001.003.18","012.012.18"];
+
+    // ======= ESTADO/CARRINHO =======
+    const state = { cart: JSON.parse(localStorage.getItem("osw_cart") || "[]"), get totalItems(){ return this.cart.reduce((s,it)=>s+it.qty,0); } };
+    function saveCart(){ localStorage.setItem("osw_cart", JSON.stringify(state.cart)); updateCartBadge(); renderCart(); }
+
+    // ======= HELPERS =======
+    const byId = (id)=>document.getElementById(id);
+    const track = byId("carouselTrack");
+
+    function createSlide(p){
+      const slide = document.createElement("article");
+      slide.className = "min-w-[240px] max-w-[240px] snap-start bg-white/5 border border-white/10 rounded-2xl overflow-hidden";
+      slide.innerHTML = `
+        <div class="aspect-[4/3] overflow-hidden bg-black/20">
+          <img src="${p.img}" alt="${p.modelo}" class="w-full h-full object-cover hover:scale-105 transition-transform" loading="lazy">
+        </div>
+        <div class="p-3 space-y-1">
+          <div class="text-xs text-white/60">Código: <span class="text-white">${p.codigo}</span></div>
+          <h3 class="font-semibold leading-tight">${p.modelo}</h3>
+          <div class="text-xs ${p.estoque ? 'text-green-400' : 'text-red-400'}">${p.estoque ? p.estoque + ' unid. em estoque' : 'Esgotado'}</div>
+        </div>`; return slide;
+    }
+    function renderCarousel(){ const top = TOP10_IDS.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean); track.innerHTML = ""; top.forEach(p=> track.appendChild(createSlide(p)) ); }
+
+    function createCard(p){
+      const card = document.createElement("article");
+      card.className = "group bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-yellow-400/60 transition";
+      card.innerHTML = `
+        <div class="aspect-[4/3] overflow-hidden bg-black/20">
+          <img src="${p.img}" alt="${p.modelo}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy">
+        </div>
+        <div class="p-4 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="font-semibold leading-tight">${p.modelo}</h3>
+            <span class="text-xs text-white/60">${p.codigo}</span>
+          </div>
+          <div class="text-sm ${p.estoque ? 'text-green-400' : 'text-red-400'}">${p.estoque ? p.estoque + ' disponíveis' : 'Esgotado'}</div>
+          <div class="flex items-center gap-2">
+            <select ${p.estoque ? '' : 'disabled'} data-id="${p.id}" class="qtySelect w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm outline-none focus:border-yellow-400/60 disabled:opacity-50">
+              ${p.estoque ? Array.from({length: p.estoque}, (_,i)=>`<option value="${i+1}">${i+1}</option>`).join('') : '<option value="" disabled selected>Indisponível</option>'}
+            </select>
+            <button ${p.estoque ? '' : 'disabled'} data-id="${p.id}" class="addToCart bg-yellow-400 text-black font-semibold px-3 py-2 rounded-xl hover:brightness-95 active:brightness-90 transition disabled:opacity-50">Adicionar</button>
+          </div>
+        </div>`; return card;
+    }
+
+    function renderCatalog(filterText=""){
+      const grid = byId("catalogGrid");
+      const empty = byId("emptyState");
+      const q = filterText.trim().toLowerCase();
+      const arr = PRODUCTS.filter(p => !q || p.codigo.toLowerCase().includes(q) || p.modelo.toLowerCase().includes(q));
+      grid.innerHTML = ""; arr.forEach(p=> grid.appendChild(createCard(p)) );
+      empty.classList.toggle("hidden", arr.length>0);
+      grid.querySelectorAll('.addToCart').forEach(btn => btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const prod = PRODUCTS.find(p=>p.id===id);
+        const select = grid.querySelector(`select.qtySelect[data-id="${id}"]`);
+        const qty = parseInt(select?.value || '1', 10);
+        addToCart(prod, qty);
+      }));
+    }
+
+    function addToCart(product, qty){
+      const existing = state.cart.find(it=>it.id===product.id);
+      const currentQty = existing ? existing.qty : 0;
+      const maxAdd = Math.max(0, product.estoque - currentQty);
+      const toAdd = Math.min(qty, maxAdd);
+      if(toAdd <= 0){ alert('Quantidade selecionada excede o estoque disponível.'); return; }
+      if(existing) existing.qty += toAdd; else state.cart.push({ id: product.id, codigo: product.codigo, modelo: product.modelo, qty: toAdd });
+      saveCart(); openCart();
+    }
+
+    function removeFromCart(id){ const idx = state.cart.findIndex(it=>it.id===id); if(idx>=0) state.cart.splice(idx,1); saveCart(); }
+    function updateCartBadge(){ byId('cartCount').textContent = state.totalItems; byId('whatsCheckout').disabled = state.totalItems===0; byId('cartTotalItems').textContent = state.totalItems; }
+
+    function renderCart(){
+      const list = byId('cartItems'); list.innerHTML = '';
+      if(state.cart.length===0){ list.innerHTML = `<div class="p-6 text-white/60 text-sm">Seu carrinho está vazio. Adicione itens do catálogo.</div>`; return; }
+      state.cart.forEach(item => {
+        const prod = PRODUCTS.find(p=>p.id===item.id); const max = prod ? prod.estoque : item.qty;
+        const row = document.createElement('div'); row.className = 'p-4 flex items-center gap-3';
+        row.innerHTML = `
+          <div class="size-16 rounded-lg overflow-hidden bg-black/20 flex-shrink-0">
+            <img src="${prod?.img||''}" alt="${item.modelo}" class="w-full h-full object-cover">
+          </div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between gap-2">
+              <div>
+                <div class="text-sm font-semibold leading-tight">${item.modelo}</div>
+                <div class="text-xs text-white/60">Código: ${item.codigo}</div>
+              </div>
+              <button class="remove size-8 grid place-items-center rounded-full hover:bg-white/10" data-id="${item.id}">✕</button>
+            </div>
+            <div class="mt-2">
+              <label class="text-xs text-white/70">Qtd.</label>
+              <select class="cartQty bg-white/5 border border-white/10 rounded-lg px-2 py-1 text-sm outline-none focus:border-yellow-400/60 ml-2" data-id="${item.id}">
+                ${Array.from({length:max},(_,i)=>`<option value='${i+1}' ${i+1===item.qty?'selected':''}>${i+1}</option>`).join('')}
+              </select>
+            </div>
+          </div>`; list.appendChild(row);
+      });
+      list.querySelectorAll('button.remove').forEach(btn=> btn.addEventListener('click', ()=> removeFromCart(btn.getAttribute('data-id')) ));
+      list.querySelectorAll('select.cartQty').forEach(sel=> sel.addEventListener('change', ()=>{ const id = sel.getAttribute('data-id'); const qty = parseInt(sel.value,10); const item = state.cart.find(it=>it.id===id); if(item){ item.qty = qty; saveCart(); } }));
+    }
+
+    // ======= WhatsApp =======
+    function buildWhatsAppMessage(){
+      const name = (byId('customerName').value || '').trim();
+      const header = `*Novo pedido – Olavo Scale Wheels*`;
+      const who = name ? `\nCliente: ${name}` : '';
+      const lines = state.cart.map((it,idx)=> `${idx+1}. ${it.modelo} (Código: ${it.codigo}) — Qtd: ${it.qty}`);
+      const total = `\nTotal de itens: ${state.totalItems}`;
+      return encodeURIComponent([header, who, '\nItens:', ...lines, total, '\nObrigado!'].filter(Boolean).join('\n'));
+    }
+    function sendToWhatsApp(){ if(!WHATSAPP_NUMBER || /\D/.test(WHATSAPP_NUMBER)){ alert('Configure corretamente o número do WhatsApp (apenas dígitos).'); return; } const text = buildWhatsAppMessage(); window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`, '_blank'); }
+
+    // ======= UI =======
+    const drawer = byId('cartDrawer'); const backdrop = byId('backdrop');
+    function openCart(){ drawer.classList.remove('translate-x-full'); backdrop.classList.remove('hidden'); }
+    function closeCart(){ drawer.classList.add('translate-x-full'); backdrop.classList.add('hidden'); }
+
+    function scrollByCards(dir=1){ const cardWidth = 240 + 16; track.scrollBy({ left: dir*cardWidth*2, behavior: 'smooth' }); }
+    function handleSearch(e){ renderCatalog(e.target.value); }
+
+    function decodeArticle(code){
+      const out = document.getElementById("decodeOut"); if(!code){ out.textContent = ""; return; }
+      const parts = code.trim().split("."); if(parts.length < 3){ out.textContent = "Formato inválido. Use MMM.CCC.TT"; return; }
+      const [mmm, ccc, ...rest] = parts; const tt = rest.join(".");
+      const corNome = COLOR_MAP[ccc] ? `${ccc} (${COLOR_MAP[ccc]})` : ccc;
+      out.innerHTML = `Modelo <strong>${mmm}</strong> • Cor <strong>${corNome}</strong> • Tamanho <strong>${tt}</strong>`;
+    }
+
+    function init(){
+      byId('year').textContent = new Date().getFullYear();
+      renderCarousel(); renderCatalog(); updateCartBadge(); renderCart();
+      byId('nextSlide').addEventListener('click', ()=>scrollByCards(1));
+      byId('prevSlide').addEventListener('click', ()=>scrollByCards(-1));
+      byId('cartButton').addEventListener('click', openCart); byId('closeCart').addEventListener('click', closeCart); backdrop.addEventListener('click', closeCart);
+      byId('whatsCheckout').addEventListener('click', sendToWhatsApp);
+      byId('searchInput').addEventListener('input', handleSearch);
+      const decodeInput = document.getElementById("decodeInput"); if(decodeInput){ decodeInput.addEventListener("input", (e)=> decodeArticle(e.target.value)); }
+      let autoScroll; function startAuto(){ autoScroll = setInterval(()=>scrollByCards(1), 3500); } function stopAuto(){ clearInterval(autoScroll); }
+      track.addEventListener('mouseenter', stopAuto); track.addEventListener('mouseleave', startAuto); startAuto();
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
 </body>
 </html>
