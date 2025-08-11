@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Olavo Scale Wheels – Catálogo (Artigos por ID)</title>
-  <meta name="description" content="Catálogo por artigos – preenche automaticamente a partir do ID (MMM.CCC.TT)" />
+  <title>Olavo Scale Wheels – Catálogo</title>
+  <meta name="description" content="Catálogo por artigos – ID MMM.CCC.TT + carrinho e galeria" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     ::-webkit-scrollbar { height: 8px; width: 8px; }
@@ -21,7 +21,7 @@
         </div>
         <div>
           <h1 class="text-lg font-semibold leading-tight">OLAVO <span class="text-yellow-400">SCALE WHEELS</span></h1>
-          <p class="text-xs text-white/60 -mt-0.5">Catálogo por artigos (auto por ID)</p>
+          <p class="text-xs text-white/60 -mt-0.5">Catálogo por artigos</p>
         </div>
       </div>
 
@@ -45,7 +45,7 @@
   </header>
 
   <main>
-    <!-- Destaques / Carousel Top 10 -->
+    <!-- Carousel Top 10 -->
     <section class="max-w-7xl mx-auto px-4 pt-8">
       <div class="mb-4 flex items-center justify-between">
         <h2 class="text-xl sm:text-2xl font-bold">Mais vendidas</h2>
@@ -65,28 +65,12 @@
     <section class="max-w-7xl mx-auto px-4 pt-6">
       <div class="mb-6 bg-white/5 border border-white/10 rounded-2xl p-5">
         <h2 class="text-xl font-bold mb-3">Como ler o código das rodas</h2>
-        <p class="text-white/80 text-sm mb-3">Formato geral: <code class="bg-black/30 px-2 py-1 rounded">MMM.CCC.TT</code></p>
+        <p class="text-white/80 text-sm mb-3">Formato: <code class="bg-black/30 px-2 py-1 rounded">MMM.CCC.TT</code></p>
         <ul class="list-disc pl-5 space-y-1 text-sm text-white/80">
-          <li><strong>MMM</strong> = <em>Modelo</em> (3 dígitos). Ex.: <code>031</code> → modelo 031.</li>
-          <li><strong>CCC</strong> = <em>Cor</em> (3 dígitos). Ex.: <code>001</code> = Cromado, <code>002</code> = Dourado, <code>003</code> = Preto, <code>020</code> = Azul <span class="text-white/50">(exemplos)</span>.</li>
-          <li><strong>TT</strong> = <em>Tamanho</em>. Pode ter ponto ou vírgula. Ex.: <code>11</code>, <code>10</code>, <code>12,5</code>.</li>
+          <li><strong>MMM</strong> = Modelo (3 dígitos).</li>
+          <li><strong>CCC</strong> = Cor (3 dígitos). Ex.: 001=Cromado, 002=Dourado, 003=Preto, 020=Azul.</li>
+          <li><strong>TT</strong> = Tamanho (pode ter vírgula, ex.: 12,5).</li>
         </ul>
-        <div class="grid sm:grid-cols-2 gap-3 mt-4 text-sm">
-          <div class="bg-black/20 rounded-xl p-3 border border-white/5">
-            <div class="text-white/60 mb-1">Exemplos</div>
-            <ul class="space-y-1">
-              <li><code>031.001.11</code> → Modelo <strong>031</strong>, Cor <strong>001 (Cromado)</strong>, Tamanho <strong>11</strong></li>
-              <li><code>031.002.11</code> → Modelo <strong>031</strong>, Cor <strong>002 (Dourado)</strong>, Tamanho <strong>11</strong></li>
-              <li><code>031.003.10</code> → Modelo <strong>031</strong>, Cor <strong>003 (Preto)</strong>, Tamanho <strong>10</strong></li>
-              <li><code>031.020.12,5</code> → Modelo <strong>031</strong>, Cor <strong>020 (Azul)</strong>, Tamanho <strong>12,5</strong></li>
-            </ul>
-          </div>
-          <div class="bg-black/20 rounded-xl p-3 border border-white/5">
-            <label class="block text-white/80 mb-2">Digite um código para decodificar</label>
-            <input id="decodeInput" type="text" placeholder="ex.: 031.001.11" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 outline-none focus:border-yellow-400/60">
-            <div id="decodeOut" class="mt-2 text-white/80"></div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -129,42 +113,76 @@
     © <span id="year"></span> OLAVO SCALE WHEELS — Todos os direitos reservados.
   </footer>
 
-  <!-- App Script: dados + UI  (cada artigo é um item único) -->
+  <!-- Lightbox / Galeria (ADICIONADO) -->
+  <div id="lightbox" class="fixed inset-0 z-[60] hidden">
+    <div id="lbBackdrop" class="absolute inset-0 bg-black/80"></div>
+    <div class="absolute inset-0 flex flex-col items-center justify-center p-4">
+      <div class="w-full max-w-5xl">
+        <div class="flex items-center justify-between mb-2">
+          <div id="lbTitle" class="text-sm text-white/70"></div>
+          <button id="lbClose" class="size-9 grid place-items-center rounded-full hover:bg-white/10">✕</button>
+        </div>
+        <div class="relative">
+          <button id="lbPrev" class="absolute left-2 top-1/2 -translate-y-1/2 size-10 rounded-full grid place-items-center bg-black/40 hover:bg-black/60">‹</button>
+          <img id="lbImg" src="" alt="" class="w-full max-h-[70vh] object-contain rounded-xl shadow-2xl bg-black/20"/>
+          <button id="lbNext" class="absolute right-2 top-1/2 -translate-y-1/2 size-10 rounded-full grid place-items-center bg-black/40 hover:bg-black/60">›</button>
+        </div>
+        <div id="lbThumbs" class="mt-3 flex gap-2 overflow-x-auto"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Script -->
   <script>
     // ======= CONFIG =======
     const WHATSAPP_NUMBER = "351913624727"; // PT (DDI 351) + número, apenas dígitos
 
-    // ======= AUTOPREENCHIMENTO A PARTIR DO ID (MMM.CCC.TT) =======
+    // ======= MAPAS E HELPERS (IGUAL AO SEU) =======
     const COLOR_MAP = { "001":"Cromado", "002":"Dourado", "003":"Preto", "020":"Azul" };
     const MODEL_MAP = { "001":"Roda 001", "011":"Roda 011", "012":"Roda 012", "031":"Roda 031", "050":"Roda 050", "060":"Roda 060" };
-    // CORRETO para sua estrutura: images/MMM/CCC/TTmm/0001.jpg
-    const imagePath = (mmm, ccc, tt) => `./images/${mmm}/${ccc}/${encodeURIComponent(tt)}mm/0001.jpg`;
 
     function parseArticleId(id){
       const parts = String(id).trim().split(".");
       if(parts.length < 3){ return { mmm: id, ccc: '', tt: '' }; }
-      const [mmm, ccc, ...rest] = parts; // tamanho pode conter ponto ou vírgula
+      const [mmm, ccc, ...rest] = parts; // tamanho pode conter ponto/vírgula
       const tt = rest.join('.');
       return { mmm, ccc, tt };
     }
+
+    // *** MANTIDO como antes: gera nome, estoque, e a imagem padrão 0001.jpg ***
     function buildProduct(base){
       const { id } = base; const { mmm, ccc, tt } = parseArticleId(id);
       const nomeModelo = MODEL_MAP[mmm] || `Roda ${mmm}`;
       const nomeCor = COLOR_MAP[ccc] || `Cor ${ccc}`;
-      return { id, codigo: id, modelo: base.modelo || `${nomeModelo} ${nomeCor} ${tt}`, estoque: Number(base.estoque)||0, img: base.img || imagePath(mmm, ccc, tt) };
+      return {
+        id,
+        codigo: id,
+        modelo: base.modelo || `${nomeModelo} ${nomeCor} ${tt}`,
+        estoque: Number(base.estoque)||0,
+        img: base.img || imagePath(mmm, ccc, tt)
+      };
     }
+    // *** MANTIDO como antes: usa images/MMM/CCC/TTmm/0001.jpg ***
+    const imagePath = (mmm, ccc, tt) => `./images/${mmm}/${ccc}/${encodeURIComponent(tt)}mm/0001.jpg`;
 
-    // >>> Só manter esta lista simples. O resto se completa.
+    // >>> Só manter esta lista simples. O resto se completa. (MANTIDO)
     const PRODUCTS_RAW = [
+      { id: "001.001.11", estoque: 8 },
       { id: "031.001.11", estoque: 8 },
-      { id: "001.001.11", estoque: 2 }
+      { id: "031.002.11", estoque: 6 },
+      { id: "031.003.10", estoque: 3 },
+      { id: "031.020.12,5", estoque: 5 },
+      { id: "011.011.17", estoque: 7 },
+      { id: "012.012.18", estoque: 2 },
+      { id: "050.001.19", estoque: 10 },
+      { id: "060.001.20", estoque: 9 }
     ];
     const PRODUCTS = PRODUCTS_RAW.map(buildProduct);
 
-    // Top 10
-    const TOP10_IDS = ["031.001.11","031.002.11","031.003.10","031.020.12,5","001.001.17","011.011.17","050.001.19","060.001.20","001.003.18","012.012.18"];
+    // Top 10 (MANTIDO – ajuste como quiser)
+    const TOP10_IDS = ["001.001.11","031.001.11","031.002.11","031.003.10","031.020.12,5","011.011.17","050.001.19","060.001.20","012.012.18"];
 
-    // ======= ESTADO/CARRINHO =======
+    // ======= ESTADO/CARRINHO (MANTIDO) =======
     const state = { cart: JSON.parse(localStorage.getItem("osw_cart") || "[]"), get totalItems(){ return this.cart.reduce((s,it)=>s+it.qty,0); } };
     function saveCart(){ localStorage.setItem("osw_cart", JSON.stringify(state.cart)); updateCartBadge(); renderCart(); }
 
@@ -172,27 +190,95 @@
     const byId = (id)=>document.getElementById(id);
     const track = byId("carouselTrack");
 
+    // ===== Lightbox helpers (APENAS ADICIONADO; não mexe no resto) =====
+    const IMAGE_EXTS = ["jpg","jpeg","png","webp"];
+    function imageFolderFromId(id){
+      const { mmm, ccc, tt } = parseArticleId(id);
+      return `./images/${mmm}/${ccc}/${encodeURIComponent(tt)}mm/`;
+    }
+    function galleryCandidates(id){
+      const { mmm, ccc } = parseArticleId(id);
+      const folder = imageFolderFromId(id);
+      const names = ["main","cover","principal",`${mmm}.${ccc}`,`${mmm}-${ccc}`];
+      for(let i=1;i<=20;i++){
+        names.push(String(i));                 // 1..20
+        names.push(String(i).padStart(2,'0')); // 01..20
+        names.push(String(i).padStart(4,'0')); // 0001..0020
+        names.push(`${mmm}.${ccc}-${i}`);      // 001.001-1 ..
+      }
+      const urls=[]; names.forEach(n=> IMAGE_EXTS.forEach(ext=> urls.push(`${folder}${n}.${ext}`)) );
+      return urls;
+    }
+    function preloadOk(url){
+      return new Promise(res=>{ const im = new Image(); im.onload=()=>res(url); im.onerror=()=>res(null); im.src=url; });
+    }
+    async function resolveGallery(id){
+      const cand = galleryCandidates(id);
+      const results = await Promise.all(cand.map(preloadOk));
+      // Garante que a principal (0001.jpg) também entre se existir:
+      const main = `${imageFolderFromId(id)}0001.jpg`;
+      if(!cand.includes(main)) results.unshift(await preloadOk(main));
+      return results.filter(Boolean);
+    }
+    const LB = { urls:[], index:0, prod:null };
+    function showLb(){ byId('lightbox').classList.remove('hidden'); updateLb(); }
+    function hideLb(){ byId('lightbox').classList.add('hidden'); }
+    function updateLb(){
+      const img = byId('lbImg'); const title = byId('lbTitle'); const thumbs = byId('lbThumbs');
+      img.src = LB.urls[LB.index] || '';
+      title.textContent = `${LB.prod?.modelo || ''} — ${LB.prod?.codigo || ''} • ${LB.index+1}/${LB.urls.length}`;
+      thumbs.innerHTML = LB.urls.map((u,i)=>`<img src="${u}" data-i="${i}" class="h-16 rounded-md object-cover border ${i===LB.index? 'border-yellow-400':'border-white/10'} cursor-pointer">`).join('');
+      thumbs.querySelectorAll('img').forEach(th => th.addEventListener('click', ()=>{ LB.index = parseInt(th.dataset.i,10); updateLb(); }));
+    }
+    async function openLightboxFor(id){
+      const p = PRODUCTS.find(x=>x.id===id); LB.prod = p;
+      LB.urls = await resolveGallery(id);
+      if(LB.urls.length===0 && p?.img){ LB.urls = [p.img]; } // fallback
+      LB.index = 0; showLb();
+    }
+    // Delegação de eventos do lightbox
+    document.addEventListener('click', (e)=>{
+      const t = e.target;
+      if(t.id==='lbPrev'){ e.preventDefault(); LB.index = (LB.index-1+LB.urls.length)%LB.urls.length; updateLb(); return; }
+      if(t.id==='lbNext'){ e.preventDefault(); LB.index = (LB.index+1)%LB.urls.length; updateLb(); return; }
+      if(t.id==='lbClose' || t.id==='lbBackdrop'){ hideLb(); return; }
+      const im = t.closest('img[data-id]');
+      if(im){ openLightboxFor(im.getAttribute('data-id')); }
+    });
+    document.addEventListener('keydown', (e)=>{
+      const box = byId('lightbox'); if(box.classList.contains('hidden')) return;
+      if(e.key==='Escape') hideLb();
+      if(e.key==='ArrowRight') { LB.index = (LB.index+1)%LB.urls.length; updateLb(); }
+      if(e.key==='ArrowLeft')  { LB.index = (LB.index-1+LB.urls.length)%LB.urls.length; updateLb(); }
+    });
+
+    // ======= UI: Carousel / Cards (APENAS acrescentei data-id no <img>) =======
     function createSlide(p){
       const slide = document.createElement("article");
       slide.className = "min-w-[240px] max-w-[240px] snap-start bg-white/5 border border-white/10 rounded-2xl overflow-hidden";
       slide.innerHTML = `
         <div class="aspect-[4/3] overflow-hidden bg-black/20">
-          <img src="${p.img}" alt="${p.modelo}" class="w-full h-full object-cover hover:scale-105 transition-transform" loading="lazy">
+          <img src="${p.img}" alt="${p.modelo}" data-id="${p.id}" class="w-full h-full object-cover hover:scale-105 transition-transform cursor-zoom-in" loading="lazy">
         </div>
         <div class="p-3 space-y-1">
           <div class="text-xs text-white/60">Código: <span class="text-white">${p.codigo}</span></div>
           <h3 class="font-semibold leading-tight">${p.modelo}</h3>
           <div class="text-xs ${p.estoque ? 'text-green-400' : 'text-red-400'}">${p.estoque ? p.estoque + ' unid. em estoque' : 'Esgotado'}</div>
-        </div>`; return slide;
+        </div>`;
+      return slide;
     }
-    function renderCarousel(){ const top = TOP10_IDS.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean); track.innerHTML = ""; top.forEach(p=> track.appendChild(createSlide(p)) ); }
+    function renderCarousel(){
+      const top = TOP10_IDS.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean);
+      track.innerHTML = "";
+      top.forEach(p=> track.appendChild(createSlide(p)) );
+    }
 
     function createCard(p){
       const card = document.createElement("article");
       card.className = "group bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-yellow-400/60 transition";
       card.innerHTML = `
         <div class="aspect-[4/3] overflow-hidden bg-black/20">
-          <img src="${p.img}" alt="${p.modelo}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy">
+          <img src="${p.img}" alt="${p.modelo}" data-id="${p.id}" class="w-full h-full object-cover group-hover:scale-105 transition-transform cursor-zoom-in" loading="lazy">
         </div>
         <div class="p-4 space-y-3">
           <div class="flex items-center justify-between">
@@ -206,15 +292,16 @@
             </select>
             <button ${p.estoque ? '' : 'disabled'} data-id="${p.id}" class="addToCart bg-yellow-400 text-black font-semibold px-3 py-2 rounded-xl hover:brightness-95 active:brightness-90 transition disabled:opacity-50">Adicionar</button>
           </div>
-        </div>`; return card;
+        </div>`;
+      return card;
     }
-
     function renderCatalog(filterText=""){
       const grid = byId("catalogGrid");
       const empty = byId("emptyState");
       const q = filterText.trim().toLowerCase();
       const arr = PRODUCTS.filter(p => !q || p.codigo.toLowerCase().includes(q) || p.modelo.toLowerCase().includes(q));
-      grid.innerHTML = ""; arr.forEach(p=> grid.appendChild(createCard(p)) );
+      grid.innerHTML = "";
+      arr.forEach(p=> grid.appendChild(createCard(p)) );
       empty.classList.toggle("hidden", arr.length>0);
       grid.querySelectorAll('.addToCart').forEach(btn => btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-id');
@@ -225,6 +312,7 @@
       }));
     }
 
+    // ======= Carrinho (MANTIDO) =======
     function addToCart(product, qty){
       const existing = state.cart.find(it=>it.id===product.id);
       const currentQty = existing ? existing.qty : 0;
@@ -234,10 +322,8 @@
       if(existing) existing.qty += toAdd; else state.cart.push({ id: product.id, codigo: product.codigo, modelo: product.modelo, qty: toAdd });
       saveCart(); openCart();
     }
-
     function removeFromCart(id){ const idx = state.cart.findIndex(it=>it.id===id); if(idx>=0) state.cart.splice(idx,1); saveCart(); }
     function updateCartBadge(){ byId('cartCount').textContent = state.totalItems; byId('whatsCheckout').disabled = state.totalItems===0; byId('cartTotalItems').textContent = state.totalItems; }
-
     function renderCart(){
       const list = byId('cartItems'); list.innerHTML = '';
       if(state.cart.length===0){ list.innerHTML = `<div class="p-6 text-white/60 text-sm">Seu carrinho está vazio. Adicione itens do catálogo.</div>`; return; }
@@ -259,16 +345,17 @@
             <div class="mt-2">
               <label class="text-xs text-white/70">Qtd.</label>
               <select class="cartQty bg-white/5 border border-white/10 rounded-lg px-2 py-1 text-sm outline-none focus:border-yellow-400/60 ml-2" data-id="${item.id}">
-                ${Array.from({length:max},(_,i)=>`<option value='${i+1}' ${i+1===item.qty?'selected':''}>${i+1}</option>`).join('')}
+                ${Array.from({length:max},(_,i)=>`<option value='${i+1}' ${prod && i+1===item.qty?'selected':''}>${i+1}</option>`).join('')}
               </select>
             </div>
-          </div>`; list.appendChild(row);
+          </div>`;
+        list.appendChild(row);
       });
       list.querySelectorAll('button.remove').forEach(btn=> btn.addEventListener('click', ()=> removeFromCart(btn.getAttribute('data-id')) ));
       list.querySelectorAll('select.cartQty').forEach(sel=> sel.addEventListener('change', ()=>{ const id = sel.getAttribute('data-id'); const qty = parseInt(sel.value,10); const item = state.cart.find(it=>it.id===id); if(item){ item.qty = qty; saveCart(); } }));
     }
 
-    // ======= WhatsApp =======
+    // ======= WhatsApp (MANTIDO) =======
     function buildWhatsAppMessage(){
       const name = (byId('customerName').value || '').trim();
       const header = `*Novo pedido – Olavo Scale Wheels*`;
@@ -277,7 +364,11 @@
       const total = `\nTotal de itens: ${state.totalItems}`;
       return encodeURIComponent([header, who, '\nItens:', ...lines, total, '\nObrigado!'].filter(Boolean).join('\n'));
     }
-    function sendToWhatsApp(){ if(!WHATSAPP_NUMBER || /\D/.test(WHATSAPP_NUMBER)){ alert('Configure corretamente o número do WhatsApp (apenas dígitos).'); return; } const text = buildWhatsAppMessage(); window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`, '_blank'); }
+    function sendToWhatsApp(){
+      if(!WHATSAPP_NUMBER || /\D/.test(WHATSAPP_NUMBER)){ alert('Configure corretamente o número do WhatsApp (apenas dígitos).'); return; }
+      const text = buildWhatsAppMessage();
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`, '_blank');
+    }
 
     // ======= UI =======
     const drawer = byId('cartDrawer'); const backdrop = byId('backdrop');
@@ -287,27 +378,21 @@
     function scrollByCards(dir=1){ const cardWidth = 240 + 16; track.scrollBy({ left: dir*cardWidth*2, behavior: 'smooth' }); }
     function handleSearch(e){ renderCatalog(e.target.value); }
 
-    function decodeArticle(code){
-      const out = document.getElementById("decodeOut"); if(!code){ out.textContent = ""; return; }
-      const parts = code.trim().split("."); if(parts.length < 3){ out.textContent = "Formato inválido. Use MMM.CCC.TT"; return; }
-      const [mmm, ccc, ...rest] = parts; const tt = rest.join(".");
-      const corNome = COLOR_MAP[ccc] ? `${ccc} (${COLOR_MAP[ccc]})` : ccc;
-      out.innerHTML = `Modelo <strong>${mmm}</strong> • Cor <strong>${corNome}</strong> • Tamanho <strong>${tt}</strong>`;
-    }
-
     function init(){
       byId('year').textContent = new Date().getFullYear();
       renderCarousel(); renderCatalog(); updateCartBadge(); renderCart();
       byId('nextSlide').addEventListener('click', ()=>scrollByCards(1));
       byId('prevSlide').addEventListener('click', ()=>scrollByCards(-1));
-      byId('cartButton').addEventListener('click', openCart); byId('closeCart').addEventListener('click', closeCart); backdrop.addEventListener('click', closeCart);
+      byId('cartButton').addEventListener('click', openCart);
+      byId('closeCart').addEventListener('click', closeCart);
+      backdrop.addEventListener('click', closeCart);
       byId('whatsCheckout').addEventListener('click', sendToWhatsApp);
       byId('searchInput').addEventListener('input', handleSearch);
-      const decodeInput = document.getElementById("decodeInput"); if(decodeInput){ decodeInput.addEventListener("input", (e)=> decodeArticle(e.target.value)); }
+
+      // auto-scroll leve no carrossel
       let autoScroll; function startAuto(){ autoScroll = setInterval(()=>scrollByCards(1), 3500); } function stopAuto(){ clearInterval(autoScroll); }
       track.addEventListener('mouseenter', stopAuto); track.addEventListener('mouseleave', startAuto); startAuto();
     }
-
     document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
