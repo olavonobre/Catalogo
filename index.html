@@ -137,7 +137,8 @@
     // ======= AUTOPREENCHIMENTO A PARTIR DO ID (MMM.CCC.TT) =======
     const COLOR_MAP = { "001":"Cromado", "002":"Dourado", "003":"Preto", "020":"Azul" };
     const MODEL_MAP = { "001":"Roda 001", "011":"Roda 011", "012":"Roda 012", "031":"Roda 031", "050":"Roda 050", "060":"Roda 060" };
-    const imagePath = (mmm, ccc, tt) => `./images/${mmm}/${ccc}/${tt}.jpg`;
+    // CORRETO para sua estrutura: images/MMM/CCC/TTmm/0001.jpg
+    const imagePath = (mmm, ccc, tt) => `./images/${mmm}/${ccc}/${encodeURIComponent(tt)}mm/0001.jpg`;
 
     function parseArticleId(id){
       const parts = String(id).trim().split(".");
