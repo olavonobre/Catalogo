@@ -140,31 +140,58 @@
     // CORRETO para sua estrutura: images/MMM/CCC/TTmm/0001.jpg
     const imagePath = (mmm, ccc, tt) => `./images/${mmm}/${ccc}/${encodeURIComponent(tt)}mm/0001.jpg`;
 
-    function parseArticleId(id){
-      const parts = String(id).trim().split(".");
-      if(parts.length < 3){ return { mmm: id, ccc: '', tt: '' }; }
+    // ======= (NOVO) SUPORTE A PREÇO NO PRÓPRIO ID =======
+    // Permite id com preço: "031.001.11|19.90" ou "031.001.11|19,90"
+    function splitIdAndPrice(idRaw){
+      const [idBase, precoStr] = String(idRaw).split("|").map(s=>s?.trim());
+      if(!precoStr) return { idBase, preco: null };
+      const n = Number(precoStr.replace(",", "."));
+      return { idBase, preco: isNaN(n) ? null : n };
+    }
+
+    function parseArticleId(idRaw){
+      const { idBase } = splitIdAndPrice(idRaw);
+      const parts = String(idBase).trim().split(".");
+      if(parts.length < 3){ return { mmm: idBase, ccc: '', tt: '' }; }
       const [mmm, ccc, ...rest] = parts; // tamanho pode conter ponto ou vírgula
       const tt = rest.join('.');
       return { mmm, ccc, tt };
     }
+
+    function formatEUR(v){
+      if(v == null) return null;
+      try{ return v.toLocaleString('pt-PT', { style: 'currency', currency: 'EUR' }); }
+      catch{ return `€${String(v).replace('.',',')}`; }
+    }
+
     function buildProduct(base){
-      const { id } = base; const { mmm, ccc, tt } = parseArticleId(id);
+      const { idBase, preco } = splitIdAndPrice(base.id);
+      const { mmm, ccc, tt } = parseArticleId(base.id);
       const nomeModelo = MODEL_MAP[mmm] || `Roda ${mmm}`;
       const nomeCor = COLOR_MAP[ccc] || `Cor ${ccc}`;
-      return { id, codigo: id, modelo: base.modelo || `${nomeModelo} ${nomeCor} ${tt}`, estoque: Number(base.estoque)||0, img: base.img || imagePath(mmm, ccc, tt) };
+      return {
+        id: idBase,                 // mantém ID puro para o resto do app
+        codigo: idBase,             // mostrado/whatsapp
+        modelo: base.modelo || `${nomeModelo} ${nomeCor} ${tt}`,
+        estoque: Number(base.estoque)||0,
+        img: base.img || imagePath(mmm, ccc, tt),
+        preco                        // número (ou null)
+      };
     }
 
     // >>> Só manter esta lista simples. O resto se completa.
+    // Você pode opcionalmente adicionar |preco no id (ex.: "031.001.11|19.90")
     const PRODUCTS_RAW = [
-      { id: "031.001.11", estoque: 8 },
-      { id: "031.002.11", estoque: 6 },
-      { id: "031.003.10", estoque: 3 },
-      { id: "031.020.12,5", estoque: 5 },
+      { id: "031.001.11|19.90", estoque: 8 },
+      { id: "031.002.11|19,90", estoque: 6 },
+      { id: "031.003.10|17.50", estoque: 3 },
+      { id: "031.020.12,5|21.00", estoque: 5 },
       { id: "001.001.17", estoque: 12 },
       { id: "001.003.18", estoque: 0 },
       { id: "011.011.17", estoque: 7 },
       { id: "012.012.18", estoque: 2 },
       { id: "050.001.19", estoque: 10 },
+      { id: "060.001.20", estoque: 9 },
       { id: "001.001.11", estoque: 2 }
     ];
     const PRODUCTS = PRODUCTS_RAW.map(buildProduct);
@@ -197,7 +224,7 @@
 
     function createCard(p){
       const card = document.createElement("article");
-      card.className = "group bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-yellow-400/60 transition";
+      card.className = "group relative bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-yellow-400/60 transition";
       card.innerHTML = `
         <div class="aspect-[4/3] overflow-hidden bg-black/20">
           <img src="${p.img}" alt="${p.modelo}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" loading="lazy">
@@ -214,7 +241,12 @@
             </select>
             <button ${p.estoque ? '' : 'disabled'} data-id="${p.id}" class="addToCart bg-yellow-400 text-black font-semibold px-3 py-2 rounded-xl hover:brightness-95 active:brightness-90 transition disabled:opacity-50">Adicionar</button>
           </div>
-        </div>`; return card;
+        </div>
+        ${p.preco != null ? `
+          <div class="absolute bottom-3 right-3 bg-yellow-400 text-black text-xs font-semibold px-2.5 py-1.5 rounded-lg shadow">
+            ${formatEUR(p.preco)}
+          </div>` : ``}
+      `; return card;
     }
 
     function renderCatalog(filterText=""){
