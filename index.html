@@ -109,11 +109,46 @@
       <button id="closeCart" class="size-8 grid place-items-center rounded-full hover:bg-white/10">✕</button>
     </div>
     <div id="cartItems" class="flex-1 overflow-y-auto divide-y divide-white/5"></div>
-    <div class="p-4 border-t border-white/10 space-y-3">
+    <div class="p-4 border-t border-white/10 space-y-4">
       <div class="flex items-center justify-between text-sm text-white/70">
         <span>Total de itens</span>
         <span id="cartTotalItems" class="font-semibold text-white">0</span>
       </div>
+
+      <!-- Subtotal e envio -->
+      <div class="space-y-2 text-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-white/70">Subtotal</span>
+          <span id="cartSubtotal" class="font-semibold text-white">—</span>
+        </div>
+
+        <fieldset class="mt-3 border border-white/10 rounded-xl p-3 space-y-2">
+          <legend class="px-2 text-xs text-white/60">Opções de envio</legend>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="ship" id="shipVinted" value="vinted" class="accent-yellow-400">
+            <span class="text-sm">Vinted <span class="text-white/50">(valor calculado depois)</span></span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="ship" id="shipWallapop" value="wallapop" class="accent-yellow-400">
+            <span class="text-sm">Wallapop <span class="text-white/50">(valor calculado depois)</span></span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="ship" id="shipCorreio" value="correio" class="accent-yellow-400">
+            <span class="text-sm">Envio direto (Correio) – <span class="font-medium text-white">7,50&nbsp;€</span></span>
+          </label>
+        </fieldset>
+
+        <div class="flex items-center justify-between">
+          <span class="text-white/70">Envio</span>
+          <span id="shippingValue" class="font-semibold text-white">—</span>
+        </div>
+
+        <div class="flex items-center justify-between border-t border-white/10 pt-2 text-base">
+          <span class="text-white/80">Total + envio</span>
+          <span id="cartGrandTotal" class="font-bold text-white">—</span>
+        </div>
+      </div>
+
       <label class="block text-sm text-white/80">Nome do cliente (opcional)
         <input id="customerName" type="text" class="mt-1 w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm outline-none focus:border-yellow-400/60" placeholder="Seu nome" />
       </label>
@@ -133,6 +168,7 @@
   <script>
     // ======= CONFIG =======
     const WHATSAPP_NUMBER = "351913624727"; // PT (DDI 351) + número, apenas dígitos
+    const CORREIO_COST = 7.50;
 
     // ======= AUTOPREENCHIMENTO A PARTIR DO ID (MMM.CCC.TT) =======
     const COLOR_MAP = { "001":"Cromado", "002":"Dourado", "003":"Preto", "020":"Azul" };
@@ -159,9 +195,9 @@
     }
 
     function formatEUR(v){
-      if(v == null) return null;
+      if(v == null) return "—";
       try{ return v.toLocaleString('pt-PT', { style: 'currency', currency: 'EUR' }); }
-      catch{ return `€${String(v).replace('.',',')}`; }
+      catch{ return `€${String(v.toFixed ? v.toFixed(2) : v).replace('.',',')}`; }
     }
 
     function buildProduct(base){
@@ -200,8 +236,12 @@
     const TOP10_IDS = ["031.001.11","031.002.11","031.003.10","031.020.12,5","001.001.17","011.011.17","050.001.19","060.001.20","001.003.18","012.012.18"];
 
     // ======= ESTADO/CARRINHO =======
-    const state = { cart: JSON.parse(localStorage.getItem("osw_cart") || "[]"), get totalItems(){ return this.cart.reduce((s,it)=>s+it.qty,0); } };
-    function saveCart(){ localStorage.setItem("osw_cart", JSON.stringify(state.cart)); updateCartBadge(); renderCart(); }
+    const state = {
+      cart: JSON.parse(localStorage.getItem("osw_cart") || "[]"),
+      get totalItems(){ return this.cart.reduce((s,it)=>s+it.qty,0); },
+      shipping: { method: null } // 'vinted' | 'wallapop' | 'correio' | null
+    };
+    function saveCart(){ localStorage.setItem("osw_cart", JSON.stringify(state.cart)); updateCartBadge(); renderCart(); updateTotals(); }
 
     // ======= HELPERS =======
     const byId = (id)=>document.getElementById(id);
@@ -209,7 +249,7 @@
 
     function createSlide(p){
       const slide = document.createElement("article");
-      slide.className = "min-w-[240px] max-w-[240px] snap-start bg-white/5 border border-white/10 rounded-2xl overflow-hidden";
+      slide.className = "relative min-w-[240px] max-w-[240px] snap-start bg-white/5 border border-white/10 rounded-2xl overflow-hidden";
       slide.innerHTML = `
         <div class="aspect-[4/3] overflow-hidden bg-black/20">
           <img src="${p.img}" alt="${p.modelo}" class="w-full h-full object-cover hover:scale-105 transition-transform" loading="lazy">
@@ -218,7 +258,12 @@
           <div class="text-xs text-white/60">Código: <span class="text-white">${p.codigo}</span></div>
           <h3 class="font-semibold leading-tight">${p.modelo}</h3>
           <div class="text-xs ${p.estoque ? 'text-green-400' : 'text-red-400'}">${p.estoque ? p.estoque + ' unid. em estoque' : 'Esgotado'}</div>
-        </div>`; return slide;
+        </div>
+        ${p.preco != null ? `
+          <div class="absolute bottom-2 right-2 bg-yellow-400 text-black text-[11px] font-semibold px-2 py-1 rounded-md shadow">
+            ${formatEUR(p.preco)}
+          </div>` : ``}
+        `; return slide;
     }
     function renderCarousel(){ const top = TOP10_IDS.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean); track.innerHTML = ""; top.forEach(p=> track.appendChild(createSlide(p)) ); }
 
@@ -287,29 +332,34 @@
     }
 
     function removeFromCart(id){ const idx = state.cart.findIndex(it=>it.id===id); if(idx>=0) state.cart.splice(idx,1); saveCart(); }
-    function updateCartBadge(){ document.getElementById('cartCount').textContent = state.totalItems; document.getElementById('whatsCheckout').disabled = state.totalItems===0; document.getElementById('cartTotalItems').textContent = state.totalItems; }
+    function updateCartBadge(){ byId('cartCount').textContent = state.totalItems; byId('whatsCheckout').disabled = state.totalItems===0; byId('cartTotalItems').textContent = state.totalItems; }
 
     function renderCart(){
-      const list = document.getElementById('cartItems'); list.innerHTML = '';
-      if(state.cart.length===0){ list.innerHTML = `<div class="p-6 text-white/60 text-sm">Seu carrinho está vazio. Adicione itens do catálogo.</div>`; return; }
+      const list = byId('cartItems'); list.innerHTML = '';
+      if(state.cart.length===0){ list.innerHTML = `<div class="p-6 text-white/60 text-sm">Seu carrinho está vazio. Adicione itens do catálogo.</div>`; updateTotals(); return; }
       state.cart.forEach(item => {
         const prod = PRODUCTS.find(p=>p.id===item.id); const max = prod ? prod.estoque : item.qty;
+        const unit = (prod && prod.preco != null) ? prod.preco : null;
+        const lineTotal = (unit != null) ? unit * item.qty : null;
+
         const row = document.createElement('div'); row.className = 'p-4 flex items-center gap-3';
         row.innerHTML = `
           <div class="size-16 rounded-lg overflow-hidden bg-black/20 flex-shrink-0">
             <img src="${prod?.img||''}" alt="${item.modelo}" class="w-full h-full object-cover">
           </div>
-          <div class="flex-1">
+          <div class="flex-1 min-w-0">
             <div class="flex items-center justify-between gap-2">
-              <div>
-                <div class="text-sm font-semibold leading-tight">${item.modelo}</div>
+              <div class="min-w-0">
+                <div class="text-sm font-semibold leading-tight truncate">${item.modelo}</div>
                 <div class="text-xs text-white/60">Código: ${item.codigo}</div>
+                <div class="text-xs text-white/70 mt-1">Preço uni.: <span class="font-semibold text-white">${formatEUR(unit)}</span></div>
+                <div class="text-xs text-white/70">Total item: <span class="font-semibold text-white">${formatEUR(lineTotal)}</span></div>
               </div>
               <button class="remove size-8 grid place-items-center rounded-full hover:bg-white/10" data-id="${item.id}">✕</button>
             </div>
-            <div class="mt-2">
+            <div class="mt-2 flex items-center gap-2">
               <label class="text-xs text-white/70">Qtd.</label>
-              <select class="cartQty bg-white/5 border border-white/10 rounded-lg px-2 py-1 text-sm outline-none focus:border-yellow-400/60 ml-2" data-id="${item.id}">
+              <select class="cartQty bg-white/5 border border-white/10 rounded-lg px-2 py-1 text-sm outline-none focus:border-yellow-400/60" data-id="${item.id}">
                 ${Array.from({length:max},(_,i)=>`<option value='${i+1}' ${i+1===item.qty?'selected':''}>${i+1}</option>`).join('')}
               </select>
             </div>
@@ -317,21 +367,77 @@
       });
       list.querySelectorAll('button.remove').forEach(btn=> btn.addEventListener('click', ()=> removeFromCart(btn.getAttribute('data-id')) ));
       list.querySelectorAll('select.cartQty').forEach(sel=> sel.addEventListener('change', ()=>{ const id = sel.getAttribute('data-id'); const qty = parseInt(sel.value,10); const item = state.cart.find(it=>it.id===id); if(item){ item.qty = qty; saveCart(); } }));
+      updateTotals();
+    }
+
+    function computeSubtotal(){
+      let sum = 0, anyPriced = false;
+      for(const it of state.cart){
+        const p = PRODUCTS.find(pp => pp.id === it.id);
+        if(p && p.preco != null){
+          sum += p.preco * it.qty;
+          anyPriced = true;
+        }
+      }
+      return { sum, anyPriced };
+    }
+
+    function currentShippingCost(){
+      if(state.shipping.method === 'correio') return CORREIO_COST;
+      if(state.shipping.method === 'vinted') return null; // calculado depois
+      if(state.shipping.method === 'wallapop') return null; // calculado depois
+      return null;
+    }
+
+    function updateTotals(){
+      const { sum, anyPriced } = computeSubtotal();
+      const shipping = currentShippingCost();
+      byId('cartSubtotal').textContent = anyPriced ? formatEUR(sum) : '—';
+
+      // Envio display
+      let shippingText = '—';
+      if(state.shipping.method === 'correio') shippingText = formatEUR(shipping);
+      else if(state.shipping.method === 'vinted') shippingText = 'a calcular';
+      else if(state.shipping.method === 'wallapop') shippingText = 'a calcular';
+      byId('shippingValue').textContent = shippingText;
+
+      // Grand total
+      let grand = sum;
+      if(typeof shipping === 'number') grand += shipping;
+      byId('cartGrandTotal').textContent = anyPriced ? formatEUR(grand) : '—';
     }
 
     // ======= WhatsApp =======
     function buildWhatsAppMessage(){
-      const name = (document.getElementById('customerName').value || '').trim();
+      const name = (byId('customerName').value || '').trim();
       const header = `*Novo pedido – Olavo Scale Wheels*`;
       const who = name ? `\nCliente: ${name}` : '';
-      const lines = state.cart.map((it,idx)=> `${idx+1}. ${it.modelo} (Código: ${it.codigo}) — Qtd: ${it.qty}`);
-      const total = `\nTotal de itens: ${state.totalItems}`;
-      return encodeURIComponent([header, who, '\nItens:', ...lines, total, '\nObrigado!'].filter(Boolean).join('\n'));
+      const lines = state.cart.map((it,idx)=> {
+        const p = PRODUCTS.find(pp=>pp.id===it.id);
+        const unit = (p && p.preco != null) ? formatEUR(p.preco) : '—';
+        const lineTotal = (p && p.preco != null) ? formatEUR(p.preco * it.qty) : '—';
+        return `${idx+1}. ${it.modelo} (Código: ${it.codigo}) — Qtd: ${it.qty} — Uni: ${unit} — Total: ${lineTotal}`;
+      });
+
+      const totalItemsLine = `\nTotal de itens: ${state.totalItems}`;
+      const { sum, anyPriced } = computeSubtotal();
+      const subtotalLine = anyPriced ? `\nSubtotal: ${formatEUR(sum)}` : '';
+      let shippingLine = '' , grandLine = '';
+      if(state.shipping.method === 'correio'){
+        shippingLine = `\nEnvio: Correio (${formatEUR(CORREIO_COST)})`;
+        grandLine = `\nTotal + envio: ${formatEUR(sum + CORREIO_COST)}`;
+      }else if(state.shipping.method === 'vinted'){
+        shippingLine = `\nEnvio: Vinted (a calcular)`;
+      }else if(state.shipping.method === 'wallapop'){
+        shippingLine = `\nEnvio: Wallapop (a calcular)`;
+      }
+
+      return encodeURIComponent([header, who, '\nItens:', ...lines, totalItemsLine, subtotalLine, shippingLine, grandLine, '\nObrigado!'].filter(Boolean).join('\n'));
     }
     function sendToWhatsApp(){ if(!WHATSAPP_NUMBER || /\D/.test(WHATSAPP_NUMBER)){ alert('Configure corretamente o número do WhatsApp (apenas dígitos).'); return; } const text = buildWhatsAppMessage(); window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`, '_blank'); }
 
     // ======= UI =======
-    const drawer = document.getElementById('cartDrawer'); const backdrop = document.getElementById('backdrop');
+    const drawer = byId('cartDrawer'); const backdrop = byId('backdrop');
     function openCart(){ drawer.classList.remove('translate-x-full'); backdrop.classList.remove('hidden'); }
     function closeCart(){ drawer.classList.add('translate-x-full'); backdrop.classList.add('hidden'); }
 
@@ -339,7 +445,7 @@
     function handleSearch(e){ renderCatalog(e.target.value); }
 
     function decodeArticle(code){
-      const out = document.getElementById("decodeOut"); if(!code){ out.textContent = ""; return; }
+      const out = byId("decodeOut"); if(!code){ out.textContent = ""; return; }
       const parts = code.trim().split("."); if(parts.length < 3){ out.textContent = "Formato inválido. Use MMM.CCC.TT"; return; }
       const [mmm, ccc, ...rest] = parts; const tt = rest.join(".");
       const corNome = COLOR_MAP[ccc] ? `${ccc} (${COLOR_MAP[ccc]})` : ccc;
@@ -347,16 +453,20 @@
     }
 
     function init(){
-      document.getElementById('year').textContent = new Date().getFullYear();
+      byId('year').textContent = new Date().getFullYear();
       renderCarousel(); renderCatalog(); updateCartBadge(); renderCart();
-      document.getElementById('nextSlide').addEventListener('click', ()=>scrollByCards(1));
-      document.getElementById('prevSlide').addEventListener('click', ()=>scrollByCards(-1));
-      document.getElementById('cartButton').addEventListener('click', openCart); document.getElementById('closeCart').addEventListener('click', closeCart); backdrop.addEventListener('click', closeCart);
-      document.getElementById('whatsCheckout').addEventListener('click', sendToWhatsApp);
-      document.getElementById('searchInput').addEventListener('input', handleSearch);
-      const decodeInput = document.getElementById("decodeInput"); if(decodeInput){ decodeInput.addEventListener("input", (e)=> decodeArticle(e.target.value)); }
+      byId('nextSlide').addEventListener('click', ()=>scrollByCards(1));
+      byId('prevSlide').addEventListener('click', ()=>scrollByCards(-1));
+      byId('cartButton').addEventListener('click', openCart); byId('closeCart').addEventListener('click', closeCart); backdrop.addEventListener('click', closeCart);
+      byId('whatsCheckout').addEventListener('click', sendToWhatsApp);
+      byId('searchInput').addEventListener('input', handleSearch);
+      const decodeInput = byId("decodeInput"); if(decodeInput){ decodeInput.addEventListener("input", (e)=> decodeArticle(e.target.value)); }
       let autoScroll; function startAuto(){ autoScroll = setInterval(()=>scrollByCards(1), 3500); } function stopAuto(){ clearInterval(autoScroll); }
       track.addEventListener('mouseenter', stopAuto); track.addEventListener('mouseleave', startAuto); startAuto();
+
+      // Shipping radios
+      const radios = ['shipVinted','shipWallapop','shipCorreio'].map(id=>byId(id));
+      radios.forEach(r => { if(r) r.addEventListener('change', (e)=>{ state.shipping.method = e.target.value; updateTotals(); }); });
     }
 
     document.addEventListener('DOMContentLoaded', init);
