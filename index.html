@@ -148,8 +148,16 @@
             <span class="text-sm">Wallapop <span class="text-white/50">(valor calculado depois)</span></span>
           </label>
           <label class="flex items-center gap-2 cursor-pointer">
-            <input type="radio" name="ship" id="shipCorreio" value="correio" class="accent-yellow-400">
-            <span class="text-sm">Envio direto (Correio) – <span class="font-medium text-white">7,50&nbsp;€</span></span>
+            <input type="radio" name="ship" id="shipCorreioAzul" value="correio_azul" class="accent-yellow-400">
+            <span class="text-sm">Correio Azul (Portugal) – <span class="font-medium text-white">2,50&nbsp;€</span></span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="ship" id="shipCorreioRegistrado" value="correio_registrado" class="accent-yellow-400">
+            <span class="text-sm">Correio Registrado (Nacional) – <span class="font-medium text-white">4,50&nbsp;€</span></span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="ship" id="shipCorreioInternacional" value="correio_internacional" class="accent-yellow-400">
+            <span class="text-sm">Correio Internacional – <span class="font-medium text-white">7,50&nbsp;€</span></span>
           </label>
         </fieldset>
 
@@ -183,7 +191,9 @@
   <script>
     // ======= CONFIG =======
     const WHATSAPP_NUMBER = "351913624727"; // PT (DDI 351) + número, apenas dígitos
-    const CORREIO_COST = 7.50;
+    const COST_AZUL = 2.50;
+    const COST_REGISTRADO = 4.50;
+    const COST_INTERNACIONAL = 7.50;
 
     // ======= AUTOPREENCHIMENTO A PARTIR DO ID (MMM.CCC.TT) =======
     const COLOR_MAP = { "001":"Cromado", "002":"Dourado", "003":"Preto", "020":"Azul" };
@@ -276,7 +286,7 @@
     const state = {
       cart: JSON.parse(localStorage.getItem("osw_cart") || "[]"),
       get totalItems(){ return this.cart.reduce((s,it)=>s+it.qty,0); },
-      shipping: { method: null }, // 'vinted' | 'wallapop' | 'correio' | null
+      shipping: { method: null }, // 'vinted' | 'wallapop' | 'correio_azul' | 'correio_registrado' | 'correio_internacional' | null
       query: "",                  // texto de busca
       page: 1,                    // página atual da listagem
       pageSize: 12                // quantidade de cards por página
@@ -500,10 +510,14 @@
     }
 
     function currentShippingCost(){
-      if(state.shipping.method === 'correio') return CORREIO_COST;
-      if(state.shipping.method === 'vinted') return null; // calculado depois
-      if(state.shipping.method === 'wallapop') return null; // calculado depois
-      return null;
+      switch(state.shipping.method){
+        case 'correio_azul': return COST_AZUL;
+        case 'correio_registrado': return COST_REGISTRADO;
+        case 'correio_internacional': return COST_INTERNACIONAL;
+        case 'vinted':
+        case 'wallapop':
+        default: return null; // a calcular ou não selecionado
+      }
     }
 
     function updateTotals(){
@@ -513,7 +527,9 @@
 
       // Envio display
       let shippingText = '—';
-      if(state.shipping.method === 'correio') shippingText = formatEUR(shipping);
+      if(state.shipping.method === 'correio_azul') shippingText = formatEUR(COST_AZUL);
+      else if(state.shipping.method === 'correio_registrado') shippingText = formatEUR(COST_REGISTRADO);
+      else if(state.shipping.method === 'correio_internacional') shippingText = formatEUR(COST_INTERNACIONAL);
       else if(state.shipping.method === 'vinted') shippingText = 'a calcular';
       else if(state.shipping.method === 'wallapop') shippingText = 'a calcular';
       byId('shippingValue').textContent = shippingText;
@@ -540,9 +556,15 @@
       const { sum, anyPriced } = computeSubtotal();
       const subtotalLine = anyPriced ? `\nSubtotal: ${formatEUR(sum)}` : '';
       let shippingLine = '' , grandLine = '';
-      if(state.shipping.method === 'correio'){
-        shippingLine = `\nEnvio: Correio (${formatEUR(CORREIO_COST)})`;
-        grandLine = `\nTotal + envio: ${formatEUR(sum + CORREIO_COST)}`;
+      if(state.shipping.method === 'correio_azul'){
+        shippingLine = `\nEnvio: Correio Azul (Portugal) (${formatEUR(COST_AZUL)})`;
+        grandLine = `\nTotal + envio: ${formatEUR(sum + COST_AZUL)}`;
+      }else if(state.shipping.method === 'correio_registrado'){
+        shippingLine = `\nEnvio: Correio Registrado (Nacional) (${formatEUR(COST_REGISTRADO)})`;
+        grandLine = `\nTotal + envio: ${formatEUR(sum + COST_REGISTRADO)}`;
+      }else if(state.shipping.method === 'correio_internacional'){
+        shippingLine = `\nEnvio: Correio Internacional (${formatEUR(COST_INTERNACIONAL)})`;
+        grandLine = `\nTotal + envio: ${formatEUR(sum + COST_INTERNACIONAL)}`;
       }else if(state.shipping.method === 'vinted'){
         shippingLine = `\nEnvio: Vinted (a calcular)`;
       }else if(state.shipping.method === 'wallapop'){
@@ -582,7 +604,7 @@
       track.addEventListener('mouseenter', stopAuto); track.addEventListener('mouseleave', startAuto); startAuto();
 
       // Shipping radios
-      const radios = ['shipVinted','shipWallapop','shipCorreio'].map(id=>byId(id));
+      const radios = ['shipVinted','shipWallapop','shipCorreioAzul','shipCorreioRegistrado','shipCorreioInternacional'].map(id=>byId(id));
       radios.forEach(r => { if(r) r.addEventListener('change', (e)=>{ state.shipping.method = e.target.value; updateTotals(); }); });
     }
 
