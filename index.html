@@ -235,23 +235,34 @@
             <span class="text-xs text-white/60">${p.codigo}</span>
           </div>
           <div class="text-sm ${p.estoque ? 'text-green-400' : 'text-red-400'}">${p.estoque ? p.estoque + ' disponíveis' : 'Esgotado'}</div>
-          <div class="flex items-center gap-2">
-            <select ${p.estoque ? '' : 'disabled'} data-id="${p.id}" class="qtySelect w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm outline-none focus:border-yellow-400/60 disabled:opacity-50">
+
+          <!-- Linha da quantidade (esquerda) + preço (direita), acima do botão  -->
+          <div class="flex items-center justify-between gap-2">
+            <select ${p.estoque ? '' : 'disabled'} data-id="${p.id}" class="qtySelect w-28 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm outline-none focus:border-yellow-400/60 disabled:opacity-50">
               ${p.estoque ? Array.from({length: p.estoque}, (_,i)=>`<option value="${i+1}">${i+1}</option>`).join('') : '<option value="" disabled selected>Indisponível</option>'}
             </select>
-            <button ${p.estoque ? '' : 'disabled'} data-id="${p.id}" class="addToCart bg-yellow-400 text-black font-semibold px-3 py-2 rounded-xl hover:brightness-95 active:brightness-90 transition disabled:opacity-50">Adicionar</button>
+            ${p.preco != null ? `
+            <div class="bg-yellow-400 text-black text-sm font-semibold px-2.5 py-1.5 rounded-lg shadow whitespace-nowrap">
+              ${formatEUR(p.preco)}
+            </div>` : `<div></div>`}
+          </div>
+
+          <!-- Botão abaixo, somente com imagem/ícone de carrinho  -->
+          <div class="flex">
+            <button ${p.estoque ? '' : 'disabled'} data-id="${p.id}" aria-label="Adicionar ao carrinho" title="Adicionar ao carrinho" class="addToCart w-full bg-yellow-400 text-black font-semibold px-3 py-2 rounded-xl hover:brightness-95 active:brightness-90 transition disabled:opacity-50 flex items-center justify-center gap-2">
+              <!-- Ícone genérico de carrinho (substitua por <img src=...> se desejar) -->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5" aria-hidden="true">
+                <path d="M2.25 3a.75.75 0 0 1 .75-.75h1.386a1.5 1.5 0 0 1 1.415 1.02l.519 1.557h12.18a.75.75 0 0 1 .728.936l-1.5 6A.75.75 0 0 1 17 12.75H7.03l-.3.9a.75.75 0 0 0 .71 1.05H18a.75.75 0 0 1 0 1.5H7.44a2.25 2.25 0 1 1-2.1-3h.09l1.62-4.86L5.22 5.25H3a.75.75 0 0 1-.75-.75Z"/>
+              </svg>
+            </button>
           </div>
         </div>
-        ${p.preco != null ? `
-          <div class="absolute bottom-3 right-3 bg-yellow-400 text-black text-xs font-semibold px-2.5 py-1.5 rounded-lg shadow">
-            ${formatEUR(p.preco)}
-          </div>` : ``}
       `; return card;
     }
 
     function renderCatalog(filterText=""){
-      const grid = byId("catalogGrid");
-      const empty = byId("emptyState");
+      const grid = document.getElementById("catalogGrid");
+      const empty = document.getElementById("emptyState");
       const q = filterText.trim().toLowerCase();
       const arr = PRODUCTS.filter(p => !q || p.codigo.toLowerCase().includes(q) || p.modelo.toLowerCase().includes(q));
       grid.innerHTML = ""; arr.forEach(p=> grid.appendChild(createCard(p)) );
@@ -276,10 +287,10 @@
     }
 
     function removeFromCart(id){ const idx = state.cart.findIndex(it=>it.id===id); if(idx>=0) state.cart.splice(idx,1); saveCart(); }
-    function updateCartBadge(){ byId('cartCount').textContent = state.totalItems; byId('whatsCheckout').disabled = state.totalItems===0; byId('cartTotalItems').textContent = state.totalItems; }
+    function updateCartBadge(){ document.getElementById('cartCount').textContent = state.totalItems; document.getElementById('whatsCheckout').disabled = state.totalItems===0; document.getElementById('cartTotalItems').textContent = state.totalItems; }
 
     function renderCart(){
-      const list = byId('cartItems'); list.innerHTML = '';
+      const list = document.getElementById('cartItems'); list.innerHTML = '';
       if(state.cart.length===0){ list.innerHTML = `<div class="p-6 text-white/60 text-sm">Seu carrinho está vazio. Adicione itens do catálogo.</div>`; return; }
       state.cart.forEach(item => {
         const prod = PRODUCTS.find(p=>p.id===item.id); const max = prod ? prod.estoque : item.qty;
@@ -310,7 +321,7 @@
 
     // ======= WhatsApp =======
     function buildWhatsAppMessage(){
-      const name = (byId('customerName').value || '').trim();
+      const name = (document.getElementById('customerName').value || '').trim();
       const header = `*Novo pedido – Olavo Scale Wheels*`;
       const who = name ? `\nCliente: ${name}` : '';
       const lines = state.cart.map((it,idx)=> `${idx+1}. ${it.modelo} (Código: ${it.codigo}) — Qtd: ${it.qty}`);
@@ -320,7 +331,7 @@
     function sendToWhatsApp(){ if(!WHATSAPP_NUMBER || /\D/.test(WHATSAPP_NUMBER)){ alert('Configure corretamente o número do WhatsApp (apenas dígitos).'); return; } const text = buildWhatsAppMessage(); window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`, '_blank'); }
 
     // ======= UI =======
-    const drawer = byId('cartDrawer'); const backdrop = byId('backdrop');
+    const drawer = document.getElementById('cartDrawer'); const backdrop = document.getElementById('backdrop');
     function openCart(){ drawer.classList.remove('translate-x-full'); backdrop.classList.remove('hidden'); }
     function closeCart(){ drawer.classList.add('translate-x-full'); backdrop.classList.add('hidden'); }
 
@@ -336,13 +347,13 @@
     }
 
     function init(){
-      byId('year').textContent = new Date().getFullYear();
+      document.getElementById('year').textContent = new Date().getFullYear();
       renderCarousel(); renderCatalog(); updateCartBadge(); renderCart();
-      byId('nextSlide').addEventListener('click', ()=>scrollByCards(1));
-      byId('prevSlide').addEventListener('click', ()=>scrollByCards(-1));
-      byId('cartButton').addEventListener('click', openCart); byId('closeCart').addEventListener('click', closeCart); backdrop.addEventListener('click', closeCart);
-      byId('whatsCheckout').addEventListener('click', sendToWhatsApp);
-      byId('searchInput').addEventListener('input', handleSearch);
+      document.getElementById('nextSlide').addEventListener('click', ()=>scrollByCards(1));
+      document.getElementById('prevSlide').addEventListener('click', ()=>scrollByCards(-1));
+      document.getElementById('cartButton').addEventListener('click', openCart); document.getElementById('closeCart').addEventListener('click', closeCart); backdrop.addEventListener('click', closeCart);
+      document.getElementById('whatsCheckout').addEventListener('click', sendToWhatsApp);
+      document.getElementById('searchInput').addEventListener('input', handleSearch);
       const decodeInput = document.getElementById("decodeInput"); if(decodeInput){ decodeInput.addEventListener("input", (e)=> decodeArticle(e.target.value)); }
       let autoScroll; function startAuto(){ autoScroll = setInterval(()=>scrollByCards(1), 3500); } function stopAuto(){ clearInterval(autoScroll); }
       track.addEventListener('mouseenter', stopAuto); track.addEventListener('mouseleave', startAuto); startAuto();
